@@ -4,7 +4,7 @@ import "errors"
 
 const (
 	minimumPlayers = 2
-	maximumPlayers = 5
+	maximumPlayers = 8
 )
 
 func (s *Game) Begin() error {
