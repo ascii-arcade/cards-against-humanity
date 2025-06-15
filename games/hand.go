@@ -8,6 +8,8 @@ import (
 
 type Hand []deck.AnswerCard
 
+const handSize = 10
+
 func (h *Hand) String() string {
 	var content strings.Builder
 	content.WriteString("Your Cards:\n\n")
