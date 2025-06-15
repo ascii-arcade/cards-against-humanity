@@ -2,7 +2,6 @@ package board
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
@@ -35,16 +34,6 @@ func (s *tableScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case s.model.Game.GetCurrentPlayer() != s.model.Player:
-			return s.model, nil
-		case keys.GameIncrementPoint.TriggeredBy(msg.String()):
-			s.model.Game.Count(s.model.Player)
-		case keys.GameEndTurn.TriggeredBy(msg.String()):
-			s.model.Game.NextTurn()
-		case keys.GameRevealQuestion.TriggeredBy(msg.String()):
-			if s.model.Game.CurrentTurnIndex == s.model.Player.TurnOrder && !s.model.Game.QuestionCard.IsRevealed {
-				s.model.Game.RevealQuestionCard()
-			}
 		}
 	}
 
@@ -52,38 +41,12 @@ func (s *tableScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *tableScreen) View() string {
-	disconnectedPlayers := s.model.Game.GetDisconnectedPlayers()
-	if len(disconnectedPlayers) > 0 {
-		var names []string
-		for _, p := range disconnectedPlayers {
-			names = append(names, p.Name)
-		}
-		return s.style.Render(
-			lipgloss.JoinVertical(
-				lipgloss.Center,
-				s.model.style.Align(lipgloss.Center).MarginBottom(2).Render(s.model.Game.Code),
-				fmt.Sprintf(s.model.lang().Get("board", "disconnected_player"), strings.Join(names, ", ")),
-				s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))),
-			),
-		)
+	questionContent := "Question card is not yet [r]evealed."
+	if s.model.Game.QuestionCard.IsRevealed {
+		questionContent = s.model.Game.QuestionCard.Text
 	}
 
-	counts := ""
-	for _, p := range s.model.Game.OrderedPlayers() {
-		counts += fmt.Sprintf("%s: %d\n", p.Name, p.Points)
-	}
-
-	var questionContent string
-	if !s.model.Game.QuestionCard.IsRevealed {
-		questionContent = "Question card is not yet [r]evealed."
-	}
-	if s.model.Game.CurrentTurnIndex == s.model.Player.TurnOrder || s.model.Game.QuestionCard.IsRevealed {
-		questionContent += "\n" + s.model.Game.QuestionCard.Text
-	}
-
-	return s.style.Render(fmt.Sprintf(s.model.lang().Get("board", "you_are"), s.model.Player.Name)) +
-		"\n\n" + counts +
-		"\n\n" + questionContent +
+	return questionContent +
 		"\n\n" + s.model.Player.Hand.String() +
 		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
 }

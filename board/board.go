@@ -1,6 +1,9 @@
 package board
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/ascii-arcade/cards-against-humanity/config"
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
@@ -66,11 +69,30 @@ func (m Model) View() string {
 		return m.lang().Get("error", "window_too_short")
 	}
 
+	disconnectedPlayers := m.Game.GetDisconnectedPlayers()
+	if len(disconnectedPlayers) > 0 {
+		var names []string
+		for _, p := range disconnectedPlayers {
+			names = append(names, p.Name)
+		}
+		return m.style.Render(
+			lipgloss.JoinVertical(
+				lipgloss.Center,
+				m.style.Align(lipgloss.Center).MarginBottom(2).Render(m.Game.Code),
+				fmt.Sprintf(m.lang().Get("board", "disconnected_player"), strings.Join(names, ", ")),
+				m.style.Render(fmt.Sprintf(m.lang().Get("global", "quit"), keys.ExitApplication.String(m.style))),
+			),
+		)
+	}
+
 	return m.activeScreen().View()
 }
 
 func (m *Model) activeScreen() screen.Screen {
 	if m.Game.InProgress() {
+		if m.Game.GetCurrentPlayer() == m.Player {
+			return m.newCzarScreen()
+		}
 		return m.newTableScreen()
 	} else {
 		return m.newLobbyScreen()
