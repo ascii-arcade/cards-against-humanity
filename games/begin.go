@@ -2,6 +2,7 @@ package games
 
 import (
 	"errors"
+	"math/rand/v2"
 
 	"github.com/ascii-arcade/cards-against-humanity/deck"
 )
@@ -17,6 +18,9 @@ func (s *Game) Begin() error {
 			return error
 		}
 
+		rand.Shuffle(len(s.players), func(i, j int) {
+			s.players[i], s.players[j] = s.players[j], s.players[i]
+		})
 		for i, p := range s.players {
 			p.SetTurnOrder(i)
 		}
