@@ -5,3 +5,9 @@ func (s *Game) Count(player *Player) {
 		player.incrementCount()
 	})
 }
+
+func (s *Game) RevealQuestionCard() {
+	s.withLock(func() {
+		s.QuestionCard.IsRevealed = true
+	})
+}

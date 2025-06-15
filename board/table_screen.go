@@ -41,6 +41,10 @@ func (s *tableScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			s.model.Game.Count(s.model.Player)
 		case keys.GameEndTurn.TriggeredBy(msg.String()):
 			s.model.Game.NextTurn()
+		case keys.GameRevealQuestion.TriggeredBy(msg.String()):
+			if s.model.Game.CurrentTurnIndex == s.model.Player.TurnOrder && !s.model.Game.QuestionCard.IsRevealed {
+				s.model.Game.RevealQuestionCard()
+			}
 		}
 	}
 
@@ -69,8 +73,17 @@ func (s *tableScreen) View() string {
 		counts += fmt.Sprintf("%s: %d\n", p.Name, p.Points)
 	}
 
+	var questionContent string
+	if !s.model.Game.QuestionCard.IsRevealed {
+		questionContent = "Question card is not yet [r]evealed."
+	}
+	if s.model.Game.CurrentTurnIndex == s.model.Player.TurnOrder || s.model.Game.QuestionCard.IsRevealed {
+		questionContent += "\n" + s.model.Game.QuestionCard.Text
+	}
+
 	return s.style.Render(fmt.Sprintf(s.model.lang().Get("board", "you_are"), s.model.Player.Name)) +
 		"\n\n" + counts +
+		"\n\n" + questionContent +
 		"\n\n" + s.model.Player.Hand.String() +
 		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
 }

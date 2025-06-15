@@ -7,5 +7,6 @@ func (s *Game) NextTurn() {
 		} else {
 			s.CurrentTurnIndex = 0
 		}
+		s.deal()
 	})
 }
