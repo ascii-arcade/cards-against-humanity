@@ -24,14 +24,16 @@ var renderer, _ = glamour.NewTermRenderer(
 )
 
 type AnswerCard struct {
-	ID   int
-	Text string `json:"text"`
+	ID         int
+	IsRevealed bool
+	Text       string `json:"text"`
 }
 
 type QuestionCard struct {
-	ID   int
-	Text string `json:"text"`
-	Pick int    `json:"pick"`
+	ID         int
+	IsRevealed bool
+	Text       string `json:"text"`
+	Pick       int    `json:"pick"`
 }
 
 func (card *AnswerCard) String() string {
