@@ -3,7 +3,7 @@ package games
 import (
 	"context"
 
-	"github.com/ascii-arcade/game-template/language"
+	"github.com/ascii-arcade/cards-against-humanity/language"
 	"github.com/charmbracelet/ssh"
 )
 

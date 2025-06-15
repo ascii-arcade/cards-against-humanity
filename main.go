@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ascii-arcade/game-template/app"
-	"github.com/ascii-arcade/game-template/config"
-	"github.com/ascii-arcade/game-template/web"
+	"github.com/ascii-arcade/cards-against-humanity/app"
+	"github.com/ascii-arcade/cards-against-humanity/config"
+	"github.com/ascii-arcade/cards-against-humanity/web"
 	"github.com/charmbracelet/log"
 	"github.com/charmbracelet/ssh"
 	"github.com/charmbracelet/wish"

@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ascii-arcade/game-template/games"
-	"github.com/ascii-arcade/game-template/keys"
-	"github.com/ascii-arcade/game-template/language"
-	"github.com/ascii-arcade/game-template/messages"
-	"github.com/ascii-arcade/game-template/screen"
+	"github.com/ascii-arcade/cards-against-humanity/games"
+	"github.com/ascii-arcade/cards-against-humanity/keys"
+	"github.com/ascii-arcade/cards-against-humanity/language"
+	"github.com/ascii-arcade/cards-against-humanity/messages"
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

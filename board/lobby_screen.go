@@ -3,9 +3,9 @@ package board
 import (
 	"fmt"
 
-	"github.com/ascii-arcade/game-template/colors"
-	"github.com/ascii-arcade/game-template/keys"
-	"github.com/ascii-arcade/game-template/screen"
+	"github.com/ascii-arcade/cards-against-humanity/colors"
+	"github.com/ascii-arcade/cards-against-humanity/keys"
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

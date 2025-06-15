@@ -1,8 +1,8 @@
 package messages
 
 import (
-	"github.com/ascii-arcade/game-template/games"
-	"github.com/ascii-arcade/game-template/screen"
+	"github.com/ascii-arcade/cards-against-humanity/games"
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 )
 
 type (

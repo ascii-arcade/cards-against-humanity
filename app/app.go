@@ -5,12 +5,12 @@ import (
 	"github.com/charmbracelet/ssh"
 	"github.com/charmbracelet/wish/bubbletea"
 
-	"github.com/ascii-arcade/game-template/board"
-	"github.com/ascii-arcade/game-template/config"
-	"github.com/ascii-arcade/game-template/games"
-	"github.com/ascii-arcade/game-template/language"
-	"github.com/ascii-arcade/game-template/menu"
-	"github.com/ascii-arcade/game-template/messages"
+	"github.com/ascii-arcade/cards-against-humanity/board"
+	"github.com/ascii-arcade/cards-against-humanity/config"
+	"github.com/ascii-arcade/cards-against-humanity/games"
+	"github.com/ascii-arcade/cards-against-humanity/language"
+	"github.com/ascii-arcade/cards-against-humanity/menu"
+	"github.com/ascii-arcade/cards-against-humanity/messages"
 )
 
 type Model struct {

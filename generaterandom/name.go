@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/rand/v2"
 
-	"github.com/ascii-arcade/game-template/language"
+	"github.com/ascii-arcade/cards-against-humanity/language"
 )
 
 func Name(lang *language.Language) string {

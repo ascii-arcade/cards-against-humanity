@@ -1,8 +1,8 @@
 package menu
 
 import (
-	"github.com/ascii-arcade/game-template/messages"
-	"github.com/ascii-arcade/game-template/screen"
+	"github.com/ascii-arcade/cards-against-humanity/messages"
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

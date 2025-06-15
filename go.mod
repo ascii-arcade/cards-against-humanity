@@ -1,4 +1,4 @@
-module github.com/ascii-arcade/game-template
+module github.com/ascii-arcade/cards-against-humanity
 
 go 1.24.1
 
