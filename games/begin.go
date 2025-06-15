@@ -43,6 +43,9 @@ func (s *Game) resetPlayerHands() {
 }
 
 func (s *Game) deal() {
+	s.QuestionCard = s.QuestionDeck[0]
+	s.QuestionDeck = s.QuestionDeck[1:]
+
 	for _, player := range s.players {
 		for len(player.Hand) < s.Config.HandSize && len(s.AnswerDeck) > 0 {
 			player.Hand = append(player.Hand, s.AnswerDeck[0])

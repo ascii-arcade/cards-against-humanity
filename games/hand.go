@@ -12,7 +12,7 @@ func (h *Hand) String() string {
 	var content strings.Builder
 	content.WriteString("Your Cards:\n\n")
 	for _, card := range *h {
-		content.WriteString("* " + card.String() + "\n")
+		content.WriteString("* " + card.Text + "\n")
 	}
 	return content.String()
 }
