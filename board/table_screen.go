@@ -66,7 +66,7 @@ func (s *tableScreen) View() string {
 
 	counts := ""
 	for _, p := range s.model.Game.OrderedPlayers() {
-		counts += fmt.Sprintf("%s: %d\n", p.Name, p.Count)
+		counts += fmt.Sprintf("%s: %d\n", p.Name, p.Points)
 	}
 
 	return s.style.Render(fmt.Sprintf(s.model.lang().Get("board", "you_are"), s.model.Player.Name)) +

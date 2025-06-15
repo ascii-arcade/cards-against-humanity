@@ -9,7 +9,7 @@ import (
 
 type Player struct {
 	Name      string
-	Count     int
+	Points    int
 	Hand      Hand
 	TurnOrder int
 
@@ -49,5 +49,5 @@ func (p *Player) OnDisconnect(fn func()) {
 }
 
 func (p *Player) incrementCount() {
-	p.Count++
+	p.Points++
 }
