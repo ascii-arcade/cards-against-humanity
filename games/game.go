@@ -74,14 +74,6 @@ func (s *Game) AddPlayer(player *Player, isHost bool) error {
 			return ErrGameInProgress
 		}
 
-		maxTurnOrder := 0
-		for _, p := range s.players {
-			if p.TurnOrder > maxTurnOrder {
-				maxTurnOrder = p.TurnOrder
-			}
-		}
-
-		player.SetTurnOrder(maxTurnOrder + 1)
 		if isHost {
 			player.MakeHost()
 		}

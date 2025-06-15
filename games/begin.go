@@ -17,6 +17,10 @@ func (s *Game) Begin() error {
 			return error
 		}
 
+		for i, p := range s.players {
+			p.SetTurnOrder(i)
+		}
+
 		s.AnswerDeck, s.QuestionDeck = deck.NewDecks()
 		s.resetPlayerHands()
 		s.deal()
