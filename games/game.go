@@ -15,6 +15,7 @@ type Game struct {
 	AnswerDeck   []deck.AnswerCard
 	QuestionDeck []deck.QuestionCard
 
+	Config           GameConfig
 	CurrentTurnIndex int
 	inProgress       bool
 	mu               sync.Mutex

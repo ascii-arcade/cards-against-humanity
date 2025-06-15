@@ -16,6 +16,7 @@ var games = make(map[string]*Game)
 func New() *Game {
 	game := &Game{
 		Code:    generaterandom.Code(),
+		Config:  NewGameConfig(),
 		players: make([]*Player, 0),
 	}
 	games[game.Code] = game
