@@ -5,11 +5,15 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/ascii-arcade/cards-against-humanity/deck"
 	"github.com/charmbracelet/ssh"
 )
 
 type Game struct {
 	Code string
+
+	AnswerDeck   []deck.AnswerCard
+	QuestionDeck []deck.QuestionCard
 
 	CurrentTurnIndex int
 	inProgress       bool

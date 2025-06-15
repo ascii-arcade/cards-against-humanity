@@ -1,10 +1,26 @@
 package deck
 
 import (
-	"fmt"
-	"os"
+	"strings"
 
 	"github.com/charmbracelet/glamour"
+)
+
+const style = `
+{
+  "document": {
+    "margin": 0,
+    "padding": 0
+  },
+  "paragraph": {
+    "margin": 0,
+    "padding": 0
+  }
+}
+`
+
+var renderer, _ = glamour.NewTermRenderer(
+	glamour.WithStylesFromJSONBytes([]byte(style)),
 )
 
 type AnswerCard struct {
@@ -19,19 +35,17 @@ type QuestionCard struct {
 }
 
 func (card *AnswerCard) String() string {
-	rendered, err := glamour.Render(card.Text, "dark")
-	if err != nil {
-		fmt.Println("error rendering markdown:", err)
-		os.Exit(1)
-	}
-	return rendered
+	return markdownRender(card.Text)
 }
 
 func (card *QuestionCard) String() string {
-	rendered, err := glamour.Render(card.Text, "dark")
+	return markdownRender(card.Text)
+}
+
+func markdownRender(text string) string {
+	rendered, err := renderer.Render(text)
 	if err != nil {
-		fmt.Println("error rendering markdown:", err)
-		os.Exit(1)
+		return text
 	}
-	return rendered
+	return strings.TrimSpace(rendered)
 }

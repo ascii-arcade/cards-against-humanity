@@ -10,6 +10,7 @@ import (
 type Player struct {
 	Name      string
 	Count     int
+	Hand      Hand
 	TurnOrder int
 
 	isHost    bool

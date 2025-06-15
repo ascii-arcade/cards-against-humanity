@@ -1,6 +1,10 @@
 package games
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/ascii-arcade/cards-against-humanity/deck"
+)
 
 const (
 	minimumPlayers = 2
@@ -13,6 +17,9 @@ func (s *Game) Begin() error {
 			return error
 		}
 
+		s.AnswerDeck, s.QuestionDeck = deck.NewDecks()
+		s.resetPlayerHands()
+		s.deal()
 		s.CurrentTurnIndex = 0
 		s.inProgress = true
 		return nil
@@ -27,4 +34,19 @@ func (s *Game) IsPlayerCountOk() error {
 		return errors.New("not_enough_players")
 	}
 	return nil
+}
+
+func (s *Game) resetPlayerHands() {
+	for _, player := range s.players {
+		player.Hand = make(Hand, 0)
+	}
+}
+
+func (s *Game) deal() {
+	for _, player := range s.players {
+		for len(player.Hand) < 10 && len(s.AnswerDeck) > 0 {
+			player.Hand = append(player.Hand, s.AnswerDeck[0])
+			s.AnswerDeck = s.AnswerDeck[1:]
+		}
+	}
 }

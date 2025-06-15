@@ -73,5 +73,6 @@ func (s *tableScreen) View() string {
 
 	return s.style.Render(fmt.Sprintf(s.model.lang().Get("board", "you_are"), s.model.Player.Name)) +
 		"\n\n" + counts +
+		"\n\n" + s.model.Player.Hand.String() +
 		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
 }
