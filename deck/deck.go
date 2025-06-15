@@ -16,7 +16,7 @@ type Pack struct {
 var allAnswerCards []AnswerCard
 var allQuestionCards []QuestionCard
 
-//go:embed CAH.json
+//go:embed data/CAH.json
 var jsonData []byte
 
 func init() {
