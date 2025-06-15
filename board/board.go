@@ -89,13 +89,15 @@ func (m Model) View() string {
 }
 
 func (m *Model) activeScreen() screen.Screen {
-	if m.Game.InProgress() {
-		if m.Game.GetCurrentPlayer() == m.Player {
-			return m.newCzarScreen()
-		}
-		return m.newPlayerScreen()
-	} else {
+	if !m.Game.InProgress() {
 		return m.newLobbyScreen()
+	}
+
+	switch {
+	case m.Game.GetCurrentPlayer() == m.Player:
+		return m.newCzarScreen()
+	default:
+		return m.newPlayerScreen()
 	}
 }
 
