@@ -2,7 +2,6 @@ package games
 
 import (
 	"slices"
-	"sort"
 	"sync"
 
 	"github.com/ascii-arcade/cards-against-humanity/deck"
@@ -27,14 +26,8 @@ func (s *Game) InProgress() bool {
 	return s.inProgress
 }
 
-func (s *Game) OrderedPlayers() []*Player {
-	var players []*Player
-	players = append(players, s.players...)
-	sort.Slice(players, func(i, j int) bool {
-		return players[i].TurnOrder < players[j].TurnOrder
-	})
-
-	return players
+func (s *Game) GetPlayers() []*Player {
+	return s.players
 }
 
 func (s *Game) refresh() {
