@@ -32,7 +32,7 @@ func NewModel(width, height int, style lipgloss.Style, player *games.Player) Mod
 		Player: player,
 	}
 
-	m.screen = m.newTableScreen()
+	m.screen = m.newPlayerScreen()
 	return m
 }
 
@@ -93,7 +93,7 @@ func (m *Model) activeScreen() screen.Screen {
 		if m.Game.GetCurrentPlayer() == m.Player {
 			return m.newCzarScreen()
 		}
-		return m.newTableScreen()
+		return m.newPlayerScreen()
 	} else {
 		return m.newLobbyScreen()
 	}

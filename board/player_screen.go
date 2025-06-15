@@ -9,24 +9,24 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-type tableScreen struct {
+type playerScreen struct {
 	model *Model
 	style lipgloss.Style
 }
 
-func (m *Model) newTableScreen() *tableScreen {
-	return &tableScreen{
+func (m *Model) newPlayerScreen() *playerScreen {
+	return &playerScreen{
 		model: m,
 		style: m.style,
 	}
 }
 
-func (s *tableScreen) WithModel(model any) screen.Screen {
+func (s *playerScreen) WithModel(model any) screen.Screen {
 	s.model = model.(*Model)
 	return s
 }
 
-func (s *tableScreen) Update(msg tea.Msg) (any, tea.Cmd) {
+func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		s.model.height, s.model.width = msg.Height, msg.Width
@@ -40,7 +40,7 @@ func (s *tableScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	return s.model, nil
 }
 
-func (s *tableScreen) View() string {
+func (s *playerScreen) View() string {
 	questionContent := "Question card is not yet [r]evealed."
 	if s.model.Game.QuestionCard.IsRevealed {
 		questionContent = s.model.Game.QuestionCard.Text
