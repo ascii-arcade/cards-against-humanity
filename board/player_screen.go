@@ -73,14 +73,13 @@ func (s *playerScreen) View() string {
 
 	var answerContent strings.Builder
 	if s.model.Player.Answer.IsLocked {
-		answerContent.WriteString(s.style.
-			Render(s.model.lang().Get("board", "answer_locked") + "\n"))
+		answerContent.WriteString(s.model.lang().Get("board", "answer_locked") + "\n")
+		answerContent.WriteString(s.model.Game.QuestionCard.String(s.model.Player.Answer.AnswerCards, s.style) + "\n")
 	} else {
-		answerContent.WriteString(s.style.
-			Render(s.model.lang().Get("board", "answer_not_locked") + "\n"))
-	}
-	for i, answerCard := range s.model.Player.Answer.AnswerCards {
-		answerContent.WriteString(fmt.Sprintf("[%d] %s\n", i, answerCard.Text))
+		answerContent.WriteString(s.style.Render(s.model.lang().Get("board", "answer_not_locked") + "\n"))
+		for _, answerCard := range s.model.Player.Answer.AnswerCards {
+			answerContent.WriteString(fmt.Sprintf("%s\n", answerCard.Text))
+		}
 	}
 
 	return questionContent +
