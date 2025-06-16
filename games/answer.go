@@ -8,6 +8,7 @@ import (
 
 type Answer struct {
 	AnswerCards []deck.AnswerCard
+	IsLocked    bool
 	IsRevealed  bool
 	Player      *Player
 }

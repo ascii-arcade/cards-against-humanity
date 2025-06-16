@@ -15,9 +15,10 @@ import (
 )
 
 type Model struct {
-	width  int
-	height int
-	style  lipgloss.Style
+	width     int
+	height    int
+	style     lipgloss.Style
+	errorCode string
 
 	Player *games.Player
 	Game   *games.Game
@@ -103,4 +104,12 @@ func waitForRefreshSignal(ch chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		return messages.RefreshBoard(<-ch)
 	}
+}
+
+func (m *Model) setError(err string) {
+	m.errorCode = err
+}
+
+func (m *Model) clearError() {
+	m.errorCode = ""
 }

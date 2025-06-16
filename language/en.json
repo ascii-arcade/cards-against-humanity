@@ -12,7 +12,10 @@
       "game_not_found": "Game not found",
       "game_already_in_progress": "Game already in progress",
       "window_too_narrow": "Window too narrow, please resize",
-      "window_too_short": "Window too short, please resize"
+      "window_too_short": "Window too short, please resize",
+      "not_enough_picks": "Not enough picks",
+      "turn_is_locked": "Turn is locked",
+      "question_not_revealed": "Question not yet revealed"
     },
     "menu": {
       "choose_language": "For english, press %s",
@@ -29,7 +32,9 @@
       "you_are" : "You are %s",
       "disconnected_player": "%s has disconnected. Waiting for them to reconnect...",
       "czar_card_not_revealed": "Card not yet [r]evealed",
-      "card_not_revealed": "Card not yet revealed"
+      "card_not_revealed": "Card not yet revealed",
+      "answer_locked": "Answer locked",
+      "answer_not_locked": "Pick your card(s)!"
     }
   },
   "username_first_words": [

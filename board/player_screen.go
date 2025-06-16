@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
@@ -29,6 +30,8 @@ func (s *playerScreen) WithModel(model any) screen.Screen {
 }
 
 func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
+	s.model.clearError()
+
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		s.model.height, s.model.width = msg.Height, msg.Width
@@ -36,11 +39,19 @@ func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
+		case s.model.Player.Answer.IsLocked:
+			s.model.setError("turn_is_locked")
+			return s.model, nil
 		case keys.GameAddAnswer.TriggeredBy(msg.String()):
 			index, _ := strconv.Atoi(msg.String())
 			s.model.Game.AddAnswerCard(s.model.Player, index)
 		case keys.GameUndo.TriggeredBy(msg.String()):
 			s.model.Game.RemoveAnswerCard(s.model.Player)
+		case keys.GameLockAnswer.TriggeredBy(msg.String()):
+			err := s.model.Game.LockAnswer(s.model.Player)
+			if err != nil {
+				s.model.setError(err.Error())
+			}
 		}
 	}
 
@@ -53,7 +64,21 @@ func (s *playerScreen) View() string {
 		questionContent = s.model.Game.QuestionCard.Text
 	}
 
+	if s.model.errorCode != "" {
+		fmt.Println("Error code:", s.model.errorCode)
+		questionContent += s.style.
+			Foreground(colors.Error).
+			Render("\n" + s.model.lang().Get("error", s.model.errorCode) + "\n")
+	}
+
 	var answerContent strings.Builder
+	if s.model.Player.Answer.IsLocked {
+		answerContent.WriteString(s.style.
+			Render(s.model.lang().Get("board", "answer_locked") + "\n"))
+	} else {
+		answerContent.WriteString(s.style.
+			Render(s.model.lang().Get("board", "answer_not_locked") + "\n"))
+	}
 	for i, answerCard := range s.model.Player.Answer.AnswerCards {
 		answerContent.WriteString(fmt.Sprintf("[%d] %s\n", i, answerCard.Text))
 	}
