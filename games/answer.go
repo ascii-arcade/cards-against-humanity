@@ -1,0 +1,31 @@
+package games
+
+import (
+	"slices"
+
+	"github.com/ascii-arcade/cards-against-humanity/deck"
+)
+
+type Answer struct {
+	AnswerCards []deck.AnswerCard
+	IsRevealed  bool
+	Player      *Player
+}
+
+func (a *Answer) add(index int) {
+	if index < 0 || index >= len(a.Player.Hand) {
+		return
+	}
+	card := a.Player.Hand[index]
+	a.Player.Hand.remove(card)
+	a.Player.Answer.AnswerCards = append(a.Player.Answer.AnswerCards, card)
+}
+
+func (a *Answer) remove(index int) {
+	if index < 0 || index >= len(a.AnswerCards) {
+		return
+	}
+	card := a.AnswerCards[index]
+	a.AnswerCards = slices.Delete(a.AnswerCards, index, index+1)
+	a.Player.Hand.add(card)
+}
