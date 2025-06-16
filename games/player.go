@@ -10,6 +10,7 @@ import (
 type Player struct {
 	Name      string
 	Points    int
+	Answer    Answer
 	Hand      Hand
 	TurnOrder int
 
