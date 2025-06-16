@@ -1,7 +1,6 @@
 package board
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/ascii-arcade/cards-against-humanity/keys"
@@ -71,10 +70,7 @@ func (s *czarScreen) View() string {
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
-			s.model.contentStyle().Render(
-				content.String()+
-					"\n\n"+s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))),
-			),
+			s.model.contentStyle().Render(content.String()),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),
 	)

@@ -96,7 +96,7 @@ func (m *Model) activeScreen() screen.Screen {
 	case m.Game.GetCurrentPlayer() == m.Player:
 		return m.newCzarScreen()
 	default:
-		return m.newPlayerScreen()
+		return m.newBuildAnswerScreen()
 	}
 }
 
@@ -123,7 +123,7 @@ func (m *Model) layoutStyle() lipgloss.Style {
 
 func (m *Model) contentStyle() lipgloss.Style {
 	return m.style.
-		Width(m.width/2).
+		Width(95).
 		Height(m.height-10).
 		Align(lipgloss.Left, lipgloss.Top)
 }

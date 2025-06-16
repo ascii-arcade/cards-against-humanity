@@ -12,24 +12,24 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-type playerScreen struct {
+type buildAnswerScreen struct {
 	model *Model
 	style lipgloss.Style
 }
 
-func (m *Model) newPlayerScreen() *playerScreen {
-	return &playerScreen{
+func (m *Model) newBuildAnswerScreen() *buildAnswerScreen {
+	return &buildAnswerScreen{
 		model: m,
 		style: m.style,
 	}
 }
 
-func (s *playerScreen) WithModel(model any) screen.Screen {
+func (s *buildAnswerScreen) WithModel(model any) screen.Screen {
 	s.model = model.(*Model)
 	return s
 }
 
-func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
+func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	s.model.clearError()
 
 	switch msg := msg.(type) {
@@ -58,7 +58,7 @@ func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	return s.model, nil
 }
 
-func (s *playerScreen) View() string {
+func (s *buildAnswerScreen) View() string {
 	questionContent := s.model.lang().Get("board", "card_not_revealed")
 	if s.model.Game.QuestionCard.IsRevealed {
 		questionContent = s.model.Game.QuestionCard.Text
@@ -72,14 +72,27 @@ func (s *playerScreen) View() string {
 	}
 
 	var answerContent strings.Builder
-	if s.model.Player.Answer.IsLocked {
-		answerContent.WriteString(s.model.lang().Get("board", "answer_locked") + "\n")
-		answerContent.WriteString(s.model.Game.QuestionCard.String(s.model.Player.Answer.AnswerCards, s.style) + "\n")
-	} else {
-		answerContent.WriteString(s.style.Render(s.model.lang().Get("board", "answer_not_locked") + "\n"))
-		for _, answerCard := range s.model.Player.Answer.AnswerCards {
-			answerContent.WriteString(fmt.Sprintf("%s\n", answerCard.Text))
+	for _, answerCard := range s.model.Player.Answer.AnswerCards {
+		answerContent.WriteString(fmt.Sprintf("%s\n", answerCard.Text))
+	}
+
+	var renderedCards []string
+	for i, card := range s.model.Player.Hand {
+		renderedCards = append(renderedCards, newAnswerCardComponent(s.model, &card).render(i))
+	}
+	const maxRows = 5
+	const cardsPerRow = 2
+	var rows [][]string
+	for i := 0; i < len(renderedCards); i += cardsPerRow {
+		end := min(i+cardsPerRow, len(renderedCards))
+		rows = append(rows, renderedCards[i:end])
+		if len(rows) >= maxRows {
+			break
 		}
+	}
+	var rowViews []string
+	for _, row := range rows {
+		rowViews = append(rowViews, lipgloss.JoinHorizontal(lipgloss.Top, row...))
 	}
 
 	return s.model.layoutStyle().Render(
@@ -88,8 +101,7 @@ func (s *playerScreen) View() string {
 			s.model.contentStyle().Render(
 				questionContent+
 					"\n\n"+answerContent.String()+
-					"\n\n"+s.model.Player.Hand.String()+
-					"\n\n"+s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))),
+					lipgloss.JoinVertical(lipgloss.Left, rowViews...),
 			),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),
