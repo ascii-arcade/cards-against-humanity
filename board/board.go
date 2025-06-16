@@ -113,3 +113,17 @@ func (m *Model) setError(err string) {
 func (m *Model) clearError() {
 	m.errorCode = ""
 }
+
+func (m *Model) layoutStyle() lipgloss.Style {
+	return m.style.
+		Width(m.width).
+		Height(m.height).
+		Align(lipgloss.Center, lipgloss.Center)
+}
+
+func (m *Model) contentStyle() lipgloss.Style {
+	return m.style.
+		Width(m.width/2).
+		Height(m.height-10).
+		Align(lipgloss.Left, lipgloss.Top)
+}

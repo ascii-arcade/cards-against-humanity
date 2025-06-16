@@ -82,8 +82,16 @@ func (s *playerScreen) View() string {
 		}
 	}
 
-	return questionContent +
-		"\n\n" + answerContent.String() +
-		"\n\n" + s.model.Player.Hand.String() +
-		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
+	return s.model.layoutStyle().Render(
+		lipgloss.JoinVertical(
+			lipgloss.Center,
+			s.model.contentStyle().Render(
+				questionContent+
+					"\n\n"+answerContent.String()+
+					"\n\n"+s.model.Player.Hand.String()+
+					"\n\n"+s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))),
+			),
+			s.style.Render(newPlayersComponent(s.model).render()),
+		),
+	)
 }

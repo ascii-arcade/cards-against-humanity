@@ -29,7 +29,6 @@
       "press_to_start": "Press %s to start the game",
       "player_list_you": "you",
       "player_list_host": "host",
-      "you_are" : "You are %s",
       "disconnected_player": "%s has disconnected. Waiting for them to reconnect...",
       "czar_card_not_revealed": "Card not yet [r]evealed",
       "card_not_revealed": "Card not yet revealed",

@@ -68,6 +68,14 @@ func (s *czarScreen) View() string {
 		content.WriteString(nameString)
 	}
 
-	return content.String() +
-		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
+	return s.model.layoutStyle().Render(
+		lipgloss.JoinVertical(
+			lipgloss.Center,
+			s.model.contentStyle().Render(
+				content.String()+
+					"\n\n"+s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))),
+			),
+			s.style.Render(newPlayersComponent(s.model).render()),
+		),
+	)
 }
