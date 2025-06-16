@@ -54,6 +54,20 @@ func (s *czarScreen) View() string {
 	}
 	content.WriteString(s.style.Render(s.model.Game.QuestionCard.Text))
 
+	content.WriteString("\n\n")
+	for _, player := range s.model.Game.GetPlayers() {
+		if s.model.Player == player {
+			continue
+		}
+		var nameString string
+		if player.Answer.IsLocked {
+			nameString = "X " + player.Name
+		} else {
+			nameString = "  " + player.Name
+		}
+		content.WriteString(nameString)
+	}
+
 	return content.String() +
 		"\n\n" + s.style.Render(fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style)))
 }
