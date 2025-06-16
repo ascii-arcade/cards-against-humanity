@@ -6,7 +6,6 @@ import (
 
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/language"
 	"github.com/ascii-arcade/cards-against-humanity/messages"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
@@ -38,10 +37,6 @@ func (s *optionScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case keys.MenuEnglish.TriggeredBy(msg.String()):
-			s.model.player.LanguagePreference.SetLanguage("EN")
-		case keys.MenuSpanish.TriggeredBy(msg.String()):
-			s.model.player.LanguagePreference.SetLanguage("ES")
 		case keys.MenuStartNewGame.TriggeredBy(msg.String()):
 			newGame := games.New()
 			if err := s.model.joinGame(newGame.Code, true); err != nil {
@@ -68,12 +63,6 @@ func (s *optionScreen) View() string {
 	content.WriteString(fmt.Sprintf(s.model.lang().Get("menu", "press_to_create"), keys.MenuStartNewGame.String(s.style)) + "\n")
 	content.WriteString(fmt.Sprintf(s.model.lang().Get("menu", "press_to_join"), keys.MenuJoinGame.String(s.style)) + "\n")
 	content.WriteString("\n\n")
-
-	if s.model.lang() == language.Languages["EN"] {
-		content.WriteString(fmt.Sprintf(language.Languages["ES"].Get("menu", "choose_language"), keys.MenuSpanish.String(s.style)))
-	} else if s.model.lang() == language.Languages["ES"] {
-		content.WriteString(fmt.Sprintf(language.Languages["EN"].Get("menu", "choose_language"), keys.MenuEnglish.String(s.style)))
-	}
 
 	return content.String()
 }

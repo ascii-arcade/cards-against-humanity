@@ -41,7 +41,7 @@ func (s *playerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *playerScreen) View() string {
-	questionContent := "Question card is not yet [r]evealed."
+	questionContent := s.model.lang().Get("board", "card_not_revealed")
 	if s.model.Game.QuestionCard.IsRevealed {
 		questionContent = s.model.Game.QuestionCard.Text
 	}

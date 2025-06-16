@@ -10,12 +10,8 @@ import (
 //go:embed en.json
 var enJSON []byte
 
-//go:embed es.json
-var esJSON []byte
-
 var Languages = map[string]*Language{
 	"EN": LoadLanguage(enJSON),
-	"ES": LoadLanguage(esJSON),
 }
 
 type Language struct {

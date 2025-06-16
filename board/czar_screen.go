@@ -50,7 +50,7 @@ func (s *czarScreen) View() string {
 	var content strings.Builder
 
 	if !s.model.Game.QuestionCard.IsRevealed {
-		content.WriteString(s.style.Render("Question card is not yet [r]evealed.\n"))
+		content.WriteString(s.style.Render(s.model.lang().Get("board", "czar_card_not_revealed")) + "\n")
 	}
 	content.WriteString(s.style.Render(s.model.Game.QuestionCard.Text))
 
