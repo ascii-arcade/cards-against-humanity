@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/config"
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
@@ -112,6 +113,17 @@ func (m *Model) setError(err string) {
 
 func (m *Model) clearError() {
 	m.errorCode = ""
+}
+
+func (m *Model) renderedError() string {
+	errorMessage := ""
+	if m.errorCode != "" {
+		errorMessage = m.style.
+			Foreground(colors.Error).
+			Render("\n" + m.lang().Get("error", m.errorCode) + "\n")
+	}
+
+	return errorMessage
 }
 
 func (m *Model) layoutStyle() lipgloss.Style {

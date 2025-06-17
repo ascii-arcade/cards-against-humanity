@@ -3,7 +3,6 @@ package board
 import (
 	"strconv"
 
-	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
@@ -54,18 +53,11 @@ func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *buildAnswerScreen) View() string {
-	errorMessage := ""
-	if s.model.errorCode != "" {
-		errorMessage = s.style.
-			Foreground(colors.Error).
-			Render("\n" + s.model.lang().Get("error", s.model.errorCode) + "\n")
-	}
-
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
 			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForPlayer(s.model.Player.Answer.AnswerCards)),
-			errorMessage,
+			s.model.renderedError(),
 			s.model.contentStyle().Render(s.cards()),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),
