@@ -29,20 +29,26 @@ func (c *questionCardComponent) renderForPlayer(cards []deck.AnswerCard) string 
 	}
 
 	args := make([]any, len(cards))
-	format := c.card.Text
+	content := c.card.Text
 	style := c.style
 
+	if !strings.Contains(content, "_") {
+		content += "\n\n_"
+	}
 	if count := len(cards); count > 0 {
-		format = strings.Replace(format, "_", "%s", count)
+		content = strings.Replace(content, "_", "%s", count)
 	}
 	for i, card := range cards {
 		args[i] = style.Bold(true).Render(card.Text)
 	}
-	return c.cardStyle().Render(fmt.Sprintf(format, args...))
+	return c.cardStyle().Render(fmt.Sprintf(content, args...))
 }
 
 func (c *questionCardComponent) renderForCzar() string {
 	content := c.card.Text
+	if !strings.Contains(content, "_") {
+		content += "\n\n_"
+	}
 	if !c.card.IsRevealed {
 		content += "\n\n" + c.model.lang().Get("board", "czar_card_not_revealed")
 	}
