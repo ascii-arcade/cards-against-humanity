@@ -93,8 +93,8 @@ func (m *Model) activeScreen() screen.Screen {
 	}
 
 	switch {
-	case m.Game.GetCurrentPlayer() == m.Player:
-		return m.newCzarScreen()
+	case m.Game.GetCurrentPlayer() == m.Player || m.Player.Answer.IsLocked:
+		return m.newRevealScreen()
 	default:
 		return m.newBuildAnswerScreen()
 	}

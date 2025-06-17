@@ -14,8 +14,8 @@
       "window_too_narrow": "Window too narrow, please resize",
       "window_too_short": "Window too short, please resize",
       "not_enough_picks": "Not enough picks",
-      "turn_is_locked": "Turn is locked",
-      "question_not_revealed": "Question not yet revealed"
+      "question_not_revealed": "Question not yet revealed",
+      "not_your_turn": "You are not the Card Czar"
     },
     "menu": {
       "choose_language": "For english, press %s",

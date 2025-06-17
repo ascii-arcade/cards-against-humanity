@@ -37,9 +37,6 @@ func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case s.model.Player.Answer.IsLocked:
-			s.model.setError("turn_is_locked")
-			return s.model, nil
 		case keys.GameAddAnswer.TriggeredBy(msg.String()):
 			index, _ := strconv.Atoi(msg.String())
 			s.model.Game.AddAnswerCard(s.model.Player, index)
