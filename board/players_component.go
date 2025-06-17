@@ -2,6 +2,7 @@ package board
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/charmbracelet/lipgloss"
@@ -26,17 +27,23 @@ func (c *playersComponent) render() string {
 	style := c.style.Width(c.model.width - 10).Align(lipgloss.Center)
 
 	for _, player := range c.players {
-		content := player.Name + ": " + strconv.Itoa(player.Points)
 		playerStyle := style
+		var content strings.Builder
 
+		if c.model.Game.GetCurrentPlayer() == player {
+			playerStyle = playerStyle.Bold(true)
+		} else if !player.Answer.IsLocked {
+			content.WriteString("")
+		}
 		if c.model.Player == player {
 			playerStyle = playerStyle.Italic(true)
 		}
-		if c.model.Game.GetCurrentPlayer() == player {
-			playerStyle = playerStyle.Bold(true)
-		}
 
-		players = append(players, playerStyle.Width(style.GetWidth()/5-2).Render(content))
+		content.WriteString(player.Name)
+		content.WriteString(": ")
+		content.WriteString(strconv.Itoa(player.Points))
+
+		players = append(players, playerStyle.Width(style.GetWidth()/5-2).Render(content.String()))
 	}
 
 	var playerRows []string

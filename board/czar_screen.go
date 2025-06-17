@@ -1,8 +1,6 @@
 package board
 
 import (
-	"strings"
-
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
@@ -46,27 +44,11 @@ func (s *czarScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *czarScreen) View() string {
-	var content strings.Builder
-
-	content.WriteString("\n\n")
-	for _, player := range s.model.Game.GetPlayers() {
-		if s.model.Player == player {
-			continue
-		}
-		var nameString string
-		if player.Answer.IsLocked {
-			nameString = "X " + player.Name
-		} else {
-			nameString = "  " + player.Name
-		}
-		content.WriteString(nameString)
-	}
 
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
 			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForCzar()),
-			s.model.contentStyle().Render(content.String()),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),
 	)
