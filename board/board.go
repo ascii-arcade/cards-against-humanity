@@ -47,15 +47,7 @@ func (m *Model) lang() *language.Language {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case messages.PlayerUpdate:
-		switch msg {
-		case 1:
-			return m, tea.Batch(
-				waitForRefreshSignal(m.Player.UpdateChan),
-				func() tea.Msg { return messages.SwitchScreenMsg{Screen: m.newWinnerScreen()} },
-			)
-		default:
-			return m, waitForRefreshSignal(m.Player.UpdateChan)
-		}
+		return m, waitForRefreshSignal(m.Player.UpdateChan)
 
 	case tea.KeyMsg:
 		switch {
@@ -102,6 +94,8 @@ func (m *Model) activeScreen() screen.Screen {
 	}
 
 	switch {
+	case m.Game.Winner != nil:
+		return m.newWinnerScreen()
 	case m.Game.GetCurrentPlayer() == m.Player || m.Player.Answer.IsLocked:
 		return m.newRevealScreen()
 	default:
@@ -109,7 +103,7 @@ func (m *Model) activeScreen() screen.Screen {
 	}
 }
 
-func waitForRefreshSignal(ch chan int) tea.Cmd {
+func waitForRefreshSignal(ch chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		return messages.PlayerUpdate(<-ch)
 	}

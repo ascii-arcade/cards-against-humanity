@@ -4,12 +4,7 @@ func (s *Game) NextTurn() {
 	s.withLock(func() {
 		winner := s.GetWinner()
 		if winner != nil {
-			for _, p := range s.players {
-				select {
-				case p.UpdateChan <- 1:
-				default:
-				}
-			}
+			s.Winner = winner
 		}
 
 		if len(s.players) > s.CurrentTurnIndex+1 {

@@ -13,7 +13,7 @@ var players = make(map[string]*Player)
 func NewPlayer(ctx context.Context, sess ssh.Session, langPref *language.LanguagePreference) *Player {
 	player, exists := players[sess.User()]
 	if exists {
-		player.UpdateChan = make(chan int)
+		player.UpdateChan = make(chan struct{})
 		player.connected = true
 		player.ctx = ctx
 
@@ -24,7 +24,7 @@ func NewPlayer(ctx context.Context, sess ssh.Session, langPref *language.Languag
 		Name:               generaterandom.Name(langPref.Lang),
 		Hand:               make(Hand, 0),
 		Points:             0,
-		UpdateChan:         make(chan int),
+		UpdateChan:         make(chan struct{}),
 		LanguagePreference: langPref,
 		Sess:               sess,
 		connected:          true,

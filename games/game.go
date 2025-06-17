@@ -15,6 +15,7 @@ type Game struct {
 	QuestionDeck []deck.QuestionCard
 	QuestionCard deck.QuestionCard
 	StagedAnswer *Answer
+	Winner       *Player
 
 	Config           GameConfig
 	CurrentTurnIndex int
@@ -34,7 +35,7 @@ func (s *Game) GetPlayers() []*Player {
 func (s *Game) refresh() {
 	for _, p := range s.players {
 		select {
-		case p.UpdateChan <- 0:
+		case p.UpdateChan <- struct{}{}:
 		default:
 		}
 	}
