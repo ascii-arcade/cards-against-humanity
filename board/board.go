@@ -47,7 +47,15 @@ func (m *Model) lang() *language.Language {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case messages.PlayerUpdate:
-		return m, waitForRefreshSignal(m.Player.UpdateChan)
+		switch msg {
+		case 1:
+			return m, tea.Batch(
+				waitForRefreshSignal(m.Player.UpdateChan),
+				func() tea.Msg { return messages.SwitchScreenMsg{Screen: m.newWinnerScreen()} },
+			)
+		default:
+			return m, waitForRefreshSignal(m.Player.UpdateChan)
+		}
 
 	case tea.KeyMsg:
 		switch {
