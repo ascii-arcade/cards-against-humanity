@@ -1,13 +1,15 @@
 services:
-  wish-template:
+  cards-against-humanity:
     build:
       context: .
       args:
         - GIT_TAG=${GIT_TAG:-dev}
-    image: ascii-arcade/wish-template:${GIT_TAG:-dev}
+    image: ascii-arcade/cards-against-humanity:${GIT_TAG:-dev}
     ports:
-      - "23234:23234"
+      - ${SSH_PORT:-23234}:${ASCII_ARCADE_SSH_PORT:-23234}
     restart: always
+    env_file:
+      - .env
     environment:
       - ASCII_ARCADE_LANG="EN"
     volumes:
