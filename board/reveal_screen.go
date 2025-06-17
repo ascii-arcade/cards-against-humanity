@@ -38,8 +38,6 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 		case s.model.Game.GetCurrentPlayer() != s.model.Player:
 			s.model.setError("not_your_turn")
 			return s.model, nil
-		case keys.GameEndTurn.TriggeredBy(msg.String()):
-			s.model.Game.NextTurn()
 		case keys.GamePick.TriggeredBy(msg.String()):
 			if s.isAllRevealed() {
 				index, _ := strconv.Atoi(msg.String())
