@@ -43,3 +43,15 @@ func (s *Game) LockAnswer(player *Player) error {
 		return errors.New("not_enough_picks")
 	})
 }
+
+func (s *Game) RevealNextAnswer() {
+	s.withLock(func() {
+		for _, player := range s.GetPlayers() {
+			if player.Answer.IsRevealed {
+				continue
+			}
+			player.Answer.IsRevealed = true
+			break
+		}
+	})
+}

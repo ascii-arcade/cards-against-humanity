@@ -65,7 +65,6 @@ func (s *buildAnswerScreen) View() string {
 }
 
 func (s *buildAnswerScreen) cards() string {
-
 	var renderedCards []string
 	for i, card := range s.model.Player.Hand {
 		renderedCards = append(renderedCards, newAnswerCardComponent(s.model, &card).render(i))

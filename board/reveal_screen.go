@@ -38,9 +38,13 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			return s.model, nil
 		case keys.GameEndTurn.TriggeredBy(msg.String()):
 			s.model.Game.NextTurn()
-		case keys.GameRevealQuestion.TriggeredBy(msg.String()):
+		case keys.GameReveal.TriggeredBy(msg.String()):
 			if !s.model.Game.QuestionCard.IsRevealed {
 				s.model.Game.RevealQuestionCard()
+				return s.model, nil
+			}
+			if s.isAllLocked() {
+				s.model.Game.RevealNextAnswer()
 			}
 		}
 	}
@@ -54,7 +58,58 @@ func (s *revealScreen) View() string {
 			lipgloss.Center,
 			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForCzar()),
 			s.model.renderedError(),
+			s.answers(),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),
 	)
+}
+
+func (s *revealScreen) answers() string {
+	var answers []*answersComponent
+	for _, player := range s.model.Game.GetPlayers() {
+		if player.Answer.IsLocked {
+			answers = append(answers, newAnswersComponent(s.model, &player.Answer))
+		}
+	}
+
+	canReveal := s.isAllLocked()
+	var answerComponents []string
+	for i, answer := range answers {
+		willReveal := !answer.answer.IsRevealed && canReveal
+		answerComponents = append(answerComponents, answer.render(s.isAllRevealed(), willReveal, i))
+		if !answer.answer.IsRevealed && canReveal {
+			canReveal = false
+		}
+	}
+
+	var answerRowsStyled []string
+	cols := 2
+	for i := 0; i < len(answers); i += cols {
+		end := min(i+cols, len(answerComponents))
+		row := lipgloss.JoinHorizontal(lipgloss.Top, answerComponents[i:end]...)
+		answerRowsStyled = append(answerRowsStyled, row)
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, answerRowsStyled...)
+}
+
+func (s *revealScreen) isAllRevealed() bool {
+	for _, player := range s.model.Game.GetPlayers() {
+		if !player.Answer.IsRevealed {
+			return false
+		}
+	}
+	return true
+}
+
+func (s *revealScreen) isAllLocked() bool {
+	for _, player := range s.model.Game.GetPlayers() {
+		if s.model.Game.GetCurrentPlayer() == player {
+			continue
+		}
+		if !player.Answer.IsLocked {
+			return false
+		}
+	}
+	return true
 }
