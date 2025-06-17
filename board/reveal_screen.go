@@ -45,6 +45,11 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 				index, _ := strconv.Atoi(msg.String())
 				s.model.Game.StageAnswer(index)
 			}
+		case keys.GameLock.TriggeredBy(msg.String()):
+			if s.model.Game.StagedAnswer != nil {
+				s.model.Game.LockStagedAnswer()
+				s.model.Game.NextTurn()
+			}
 		case keys.GameReveal.TriggeredBy(msg.String()):
 			if !s.model.Game.QuestionCard.IsRevealed {
 				s.model.Game.RevealQuestionCard()

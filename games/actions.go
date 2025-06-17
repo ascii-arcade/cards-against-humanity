@@ -70,3 +70,11 @@ func (s *Game) StageAnswer(index int) {
 		s.StagedAnswer = answers[index]
 	})
 }
+
+func (s *Game) LockStagedAnswer() {
+	s.withLock(func() {
+		if s.StagedAnswer != nil {
+			s.StagedAnswer.Player.incrementCount()
+		}
+	})
+}

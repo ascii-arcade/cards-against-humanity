@@ -41,7 +41,7 @@ func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			s.model.Game.AddAnswerCard(s.model.Player, index)
 		case keys.GameUndo.TriggeredBy(msg.String()):
 			s.model.Game.RemoveAnswerCard(s.model.Player)
-		case keys.GameLockAnswer.TriggeredBy(msg.String()):
+		case keys.GameLock.TriggeredBy(msg.String()):
 			err := s.model.Game.LockAnswer(s.model.Player)
 			if err != nil {
 				s.model.setError(err.Error())
