@@ -14,6 +14,7 @@ type Game struct {
 	AnswerDeck   []deck.AnswerCard
 	QuestionDeck []deck.QuestionCard
 	QuestionCard deck.QuestionCard
+	StagedAnswer *Answer
 
 	Config           GameConfig
 	CurrentTurnIndex int

@@ -36,7 +36,7 @@ func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case keys.GameAddAnswer.TriggeredBy(msg.String()):
+		case keys.GamePick.TriggeredBy(msg.String()):
 			index, _ := strconv.Atoi(msg.String())
 			s.model.Game.AddAnswerCard(s.model.Player, index)
 		case keys.GameUndo.TriggeredBy(msg.String()):
@@ -56,7 +56,7 @@ func (s *buildAnswerScreen) View() string {
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
-			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForPlayer(s.model.Player.Answer.AnswerCards)),
+			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForBuild(s.model.Player.Answer.AnswerCards)),
 			s.model.renderedError(),
 			s.model.contentStyle().Render(s.cards()),
 			s.style.Render(newPlayersComponent(s.model).render()),

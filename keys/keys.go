@@ -36,7 +36,7 @@ var (
 	GameIncrementPoint = Keys{"a"}
 	GameEndTurn        = Keys{"z"}
 	GameReveal         = Keys{"r"}
-	GameAddAnswer      = Keys{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	GamePick           = Keys{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 	GameLockAnswer     = Keys{"l"}
 	GameUndo           = Keys{"u"}
 	LobbyStartGame     = Keys{"s"}

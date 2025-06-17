@@ -53,6 +53,7 @@ func (s *Game) resetPlayerHands() {
 func (s *Game) deal() {
 	s.QuestionCard = s.QuestionDeck[0]
 	s.QuestionDeck = s.QuestionDeck[1:]
+	s.StagedAnswer = nil
 
 	for _, player := range s.players {
 		player.Answer = Answer{Player: player}

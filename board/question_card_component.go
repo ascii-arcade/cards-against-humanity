@@ -23,9 +23,41 @@ func newQuestionCardComponent(model *Model, card *deck.QuestionCard) *questionCa
 	}
 }
 
-func (c *questionCardComponent) renderForPlayer(cards []deck.AnswerCard) string {
+func (c *questionCardComponent) renderForBuild(cards []deck.AnswerCard) string {
 	if !c.card.IsRevealed {
 		return c.cardStyle().Render("")
+	}
+
+	return c.cardStyle().Render(c.String(cards))
+}
+
+func (c *questionCardComponent) renderForReveal() string {
+	content := c.card.Text
+	if !strings.Contains(content, "_") {
+		content += "\n\n_"
+	}
+	if !c.card.IsRevealed {
+		content += "\n\n" + c.model.lang().Get("board", "czar_question_card_not_revealed")
+	}
+	if c.model.Game.StagedAnswer != nil {
+		content = c.String(c.model.Game.StagedAnswer.AnswerCards)
+	}
+
+	return c.cardStyle().Render(content)
+}
+
+func (c *questionCardComponent) cardStyle() lipgloss.Style {
+	return c.style.
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(colors.QuestionBorder).
+		Width(c.model.contentWidth() / 3 * 2).
+		Height(3).
+		Padding(1)
+}
+
+func (c *questionCardComponent) String(cards []deck.AnswerCard) string {
+	if len(cards) == 0 {
+		return ""
 	}
 
 	args := make([]any, len(cards))
@@ -42,26 +74,5 @@ func (c *questionCardComponent) renderForPlayer(cards []deck.AnswerCard) string 
 	for i, card := range cards {
 		args[i] = style.Bold(true).Render(card.Text)
 	}
-	return c.cardStyle().Render(fmt.Sprintf(content, args...))
-}
-
-func (c *questionCardComponent) renderForCzar() string {
-	content := c.card.Text
-	if !strings.Contains(content, "_") {
-		content += "\n\n_"
-	}
-	if !c.card.IsRevealed {
-		content += "\n\n" + c.model.lang().Get("board", "czar_card_not_revealed")
-	}
-
-	return c.cardStyle().Render(content)
-}
-
-func (c *questionCardComponent) cardStyle() lipgloss.Style {
-	return c.style.
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(colors.QuestionBorder).
-		Width(c.model.contentWidth() / 3 * 2).
-		Height(3).
-		Padding(1)
+	return fmt.Sprintf(content, args...)
 }

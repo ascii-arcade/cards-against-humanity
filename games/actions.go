@@ -55,3 +55,18 @@ func (s *Game) RevealNextAnswer() {
 		}
 	})
 }
+
+func (s *Game) StageAnswer(index int) {
+	s.withLock(func() {
+		var answers []*Answer
+		for _, player := range s.GetPlayers() {
+			if player.Answer.IsLocked {
+				answers = append(answers, &player.Answer)
+			}
+		}
+		if index < 0 || index >= len(answers) {
+			return
+		}
+		s.StagedAnswer = answers[index]
+	})
+}

@@ -1,6 +1,8 @@
 package board
 
 import (
+	"strconv"
+
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
@@ -38,6 +40,11 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			return s.model, nil
 		case keys.GameEndTurn.TriggeredBy(msg.String()):
 			s.model.Game.NextTurn()
+		case keys.GamePick.TriggeredBy(msg.String()):
+			if s.isAllRevealed() {
+				index, _ := strconv.Atoi(msg.String())
+				s.model.Game.StageAnswer(index)
+			}
 		case keys.GameReveal.TriggeredBy(msg.String()):
 			if !s.model.Game.QuestionCard.IsRevealed {
 				s.model.Game.RevealQuestionCard()
@@ -53,10 +60,15 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *revealScreen) View() string {
+	question := newQuestionCardComponent(
+		s.model,
+		&s.model.Game.QuestionCard,
+	).renderForReveal()
+
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
-			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForCzar()),
+			s.style.Render(question),
 			s.model.renderedError(),
 			s.answers(),
 			s.style.Render(newPlayersComponent(s.model).render()),
