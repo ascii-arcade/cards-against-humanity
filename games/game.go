@@ -34,7 +34,7 @@ func (s *Game) GetPlayers() []*Player {
 func (s *Game) refresh() {
 	for _, p := range s.players {
 		select {
-		case p.UpdateChan <- struct{}{}:
+		case p.UpdateChan <- 0:
 		default:
 		}
 	}

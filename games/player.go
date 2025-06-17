@@ -17,7 +17,7 @@ type Player struct {
 	isHost    bool
 	connected bool
 
-	UpdateChan         chan struct{}
+	UpdateChan         chan int
 	LanguagePreference *language.LanguagePreference
 
 	Sess ssh.Session

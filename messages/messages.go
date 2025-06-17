@@ -9,5 +9,5 @@ type (
 	SwitchToMenuMsg  struct{}
 	SwitchToBoardMsg struct{ Game *games.Game }
 	SwitchScreenMsg  struct{ Screen screen.Screen }
-	RefreshBoard     struct{}
+	RefreshBoard     int
 )
