@@ -7,11 +7,6 @@ import (
 	"github.com/ascii-arcade/cards-against-humanity/deck"
 )
 
-const (
-	minimumPlayers = 2
-	maximumPlayers = 8
-)
-
 func (s *Game) Begin() error {
 	return s.withErrLock(func() error {
 		if error := s.IsPlayerCountOk(); error != nil {
@@ -35,10 +30,10 @@ func (s *Game) Begin() error {
 }
 
 func (s *Game) IsPlayerCountOk() error {
-	if len(s.players) > maximumPlayers {
+	if len(s.players) > s.Config.MaxPlayers {
 		return errors.New("too_many_players")
 	}
-	if len(s.players) < minimumPlayers {
+	if len(s.players) < s.Config.MinPlayers {
 		return errors.New("not_enough_players")
 	}
 	return nil
