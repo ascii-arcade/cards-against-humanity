@@ -36,6 +36,7 @@ func (c *questionCardComponent) renderForPlayer(cards []deck.AnswerCard) string 
 		content += "\n\n_"
 	}
 	if count := len(cards); count > 0 {
+		content = strings.Replace(content, "%", "%%", count)
 		content = strings.Replace(content, "_", "%s", count)
 	}
 	for i, card := range cards {
