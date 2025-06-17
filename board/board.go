@@ -46,7 +46,7 @@ func (m *Model) lang() *language.Language {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case messages.RefreshBoard:
+	case messages.PlayerUpdate:
 		return m, waitForRefreshSignal(m.Player.UpdateChan)
 
 	case tea.KeyMsg:
@@ -103,7 +103,7 @@ func (m *Model) activeScreen() screen.Screen {
 
 func waitForRefreshSignal(ch chan int) tea.Cmd {
 	return func() tea.Msg {
-		return messages.RefreshBoard(<-ch)
+		return messages.PlayerUpdate(<-ch)
 	}
 }
 
