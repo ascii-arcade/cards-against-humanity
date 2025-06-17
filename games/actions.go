@@ -1,6 +1,8 @@
 package games
 
-import "errors"
+import (
+	"errors"
+)
 
 func (s *Game) Count(player *Player) {
 	s.withLock(func() {
@@ -47,6 +49,9 @@ func (s *Game) LockAnswer(player *Player) error {
 func (s *Game) RevealNextAnswer() {
 	s.withLock(func() {
 		for _, player := range s.GetPlayers() {
+			if s.GetCurrentPlayer() == player {
+				continue
+			}
 			if player.Answer.IsRevealed {
 				continue
 			}

@@ -1,11 +1,13 @@
 package games
 
 type GameConfig struct {
-	HandSize int
+	EndPoints int
+	HandSize  int
 }
 
 func NewGameConfig() GameConfig {
 	return GameConfig{
-		HandSize: 10,
+		EndPoints: 3,
+		HandSize:  10,
 	}
 }

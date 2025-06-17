@@ -57,7 +57,7 @@ func (c *questionCardComponent) cardStyle() lipgloss.Style {
 
 func (c *questionCardComponent) String(cards []deck.AnswerCard) string {
 	if len(cards) == 0 {
-		return ""
+		return c.card.Text
 	}
 
 	args := make([]any, len(cards))

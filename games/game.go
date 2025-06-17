@@ -15,6 +15,7 @@ type Game struct {
 	QuestionDeck []deck.QuestionCard
 	QuestionCard deck.QuestionCard
 	StagedAnswer *Answer
+	Winner       *Player
 
 	Config           GameConfig
 	CurrentTurnIndex int
@@ -112,13 +113,11 @@ func (s *Game) getPlayer(sess ssh.Session) (*Player, bool) {
 
 func (s *Game) GetDisconnectedPlayers() []*Player {
 	var players []*Player
-	s.withLock(func() {
-		for _, p := range s.players {
-			if !p.connected {
-				players = append(players, p)
-			}
+	for _, p := range s.players {
+		if !p.connected {
+			players = append(players, p)
 		}
-	})
+	}
 	return players
 }
 
@@ -139,4 +138,13 @@ func (s *Game) GetPlayerCount(includeDisconnected bool) int {
 
 func (s *Game) GetCurrentPlayer() *Player {
 	return s.players[s.CurrentTurnIndex]
+}
+
+func (s *Game) GetWinner() *Player {
+	for _, player := range s.players {
+		if player.Points >= s.Config.EndPoints {
+			return player
+		}
+	}
+	return nil
 }

@@ -110,6 +110,9 @@ func (s *revealScreen) answers() string {
 
 func (s *revealScreen) isAllRevealed() bool {
 	for _, player := range s.model.Game.GetPlayers() {
+		if s.model.Game.GetCurrentPlayer() == player {
+			continue
+		}
 		if !player.Answer.IsRevealed {
 			return false
 		}
