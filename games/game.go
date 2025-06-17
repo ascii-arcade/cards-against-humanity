@@ -140,3 +140,12 @@ func (s *Game) GetPlayerCount(includeDisconnected bool) int {
 func (s *Game) GetCurrentPlayer() *Player {
 	return s.players[s.CurrentTurnIndex]
 }
+
+func (s *Game) GetWinner() *Player {
+	for _, player := range s.players {
+		if player.Points >= s.Config.EndPoints {
+			return player
+		}
+	}
+	return nil
+}

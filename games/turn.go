@@ -2,6 +2,10 @@ package games
 
 func (s *Game) NextTurn() {
 	s.withLock(func() {
+		// winner := s.GetWinner()
+		// if winner != nil {
+		// }
+
 		if len(s.players) > s.CurrentTurnIndex+1 {
 			s.CurrentTurnIndex++
 		} else {
