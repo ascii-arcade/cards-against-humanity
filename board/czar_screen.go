@@ -48,11 +48,6 @@ func (s *czarScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 func (s *czarScreen) View() string {
 	var content strings.Builder
 
-	if !s.model.Game.QuestionCard.IsRevealed {
-		content.WriteString(s.style.Render(s.model.lang().Get("board", "czar_card_not_revealed")) + "\n")
-	}
-	content.WriteString(s.style.Render(s.model.Game.QuestionCard.Text))
-
 	content.WriteString("\n\n")
 	for _, player := range s.model.Game.GetPlayers() {
 		if s.model.Player == player {
@@ -70,6 +65,7 @@ func (s *czarScreen) View() string {
 	return s.model.layoutStyle().Render(
 		lipgloss.JoinVertical(
 			lipgloss.Center,
+			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForCzar()),
 			s.model.contentStyle().Render(content.String()),
 			s.style.Render(newPlayersComponent(s.model).render()),
 		),

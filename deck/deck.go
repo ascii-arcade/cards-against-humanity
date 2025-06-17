@@ -3,13 +3,9 @@ package deck
 import (
 	_ "embed"
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand/v2"
 	"slices"
-	"strings"
-
-	"github.com/charmbracelet/lipgloss"
 )
 
 type AnswerCard struct {
@@ -59,13 +55,4 @@ func shuffle[S any](s []S) {
 	rand.Shuffle(len(s), func(i, j int) {
 		s[i], s[j] = s[j], s[i]
 	})
-}
-
-func (q *QuestionCard) String(cards []AnswerCard, style lipgloss.Style) string {
-	format := strings.ReplaceAll(q.Text, "_", "%s")
-	args := make([]any, len(cards))
-	for i, card := range cards {
-		args[i] = style.Bold(true).Render(card.Text)
-	}
-	return fmt.Sprintf(format, args...)
 }

@@ -54,5 +54,7 @@ func (c *playersComponent) render() string {
 		)
 	}
 
-	return style.Render(lipgloss.JoinVertical(lipgloss.Center, playerRows...))
+	return style.
+		MarginTop(2).
+		Render(lipgloss.JoinVertical(lipgloss.Center, playerRows...))
 }

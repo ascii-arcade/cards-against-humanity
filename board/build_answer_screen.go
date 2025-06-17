@@ -1,9 +1,7 @@
 package board
 
 import (
-	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
@@ -59,22 +57,25 @@ func (s *buildAnswerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *buildAnswerScreen) View() string {
-	questionContent := s.model.lang().Get("board", "card_not_revealed")
-	if s.model.Game.QuestionCard.IsRevealed {
-		questionContent = s.model.Game.QuestionCard.Text
-	}
-
+	errorMessage := ""
 	if s.model.errorCode != "" {
-		fmt.Println("Error code:", s.model.errorCode)
-		questionContent += s.style.
+		errorMessage = s.style.
 			Foreground(colors.Error).
 			Render("\n" + s.model.lang().Get("error", s.model.errorCode) + "\n")
 	}
 
-	var answerContent strings.Builder
-	for _, answerCard := range s.model.Player.Answer.AnswerCards {
-		answerContent.WriteString(fmt.Sprintf("%s\n", answerCard.Text))
-	}
+	return s.model.layoutStyle().Render(
+		lipgloss.JoinVertical(
+			lipgloss.Center,
+			s.style.Render(newQuestionCardComponent(s.model, &s.model.Game.QuestionCard).renderForPlayer(s.model.Player.Answer.AnswerCards)),
+			errorMessage,
+			s.model.contentStyle().Render(s.cards()),
+			s.style.Render(newPlayersComponent(s.model).render()),
+		),
+	)
+}
+
+func (s *buildAnswerScreen) cards() string {
 
 	var renderedCards []string
 	for i, card := range s.model.Player.Hand {
@@ -95,15 +96,5 @@ func (s *buildAnswerScreen) View() string {
 		rowViews = append(rowViews, lipgloss.JoinHorizontal(lipgloss.Top, row...))
 	}
 
-	return s.model.layoutStyle().Render(
-		lipgloss.JoinVertical(
-			lipgloss.Center,
-			s.model.contentStyle().Render(
-				questionContent+
-					"\n\n"+answerContent.String()+
-					lipgloss.JoinVertical(lipgloss.Left, rowViews...),
-			),
-			s.style.Render(newPlayersComponent(s.model).render()),
-		),
-	)
+	return lipgloss.JoinVertical(lipgloss.Left, rowViews...)
 }

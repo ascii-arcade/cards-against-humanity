@@ -30,10 +30,7 @@
       "player_list_you": "you",
       "player_list_host": "host",
       "disconnected_player": "%s has disconnected. Waiting for them to reconnect...",
-      "czar_card_not_revealed": "Card not yet [r]evealed",
-      "card_not_revealed": "Card not yet revealed",
-      "answer_locked": "Answer locked",
-      "answer_not_locked": "Pick your card(s)!"
+      "czar_card_not_revealed": "Card not yet [r]evealed"
     }
   },
   "username_first_words": [

@@ -118,12 +118,16 @@ func (m *Model) layoutStyle() lipgloss.Style {
 	return m.style.
 		Width(m.width).
 		Height(m.height).
-		Align(lipgloss.Center, lipgloss.Center)
+		PaddingTop(3).
+		Align(lipgloss.Center)
 }
 
 func (m *Model) contentStyle() lipgloss.Style {
 	return m.style.
-		Width(95).
-		Height(m.height-10).
+		Width(m.contentWidth()).
 		Align(lipgloss.Left, lipgloss.Top)
+}
+
+func (m *Model) contentWidth() int {
+	return max(config.MinimumWidth-10, m.width-30)
 }
