@@ -39,4 +39,5 @@ var (
 	GameLock           = Keys{"l"}
 	GameUndo           = Keys{"u"}
 	LobbyStartGame     = Keys{"s"}
+	LobbySettings      = Keys{"c"}
 )

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ascii-arcade/cards-against-humanity/generaterandom"
 	"github.com/ascii-arcade/cards-against-humanity/language"
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 	"github.com/charmbracelet/ssh"
 )
 
@@ -14,6 +15,7 @@ func NewPlayer(ctx context.Context, sess ssh.Session, langPref *language.Languag
 	player, exists := players[sess.User()]
 	if exists {
 		player.UpdateChan = make(chan struct{})
+		player.ActiveScreenCode = screen.BoardLobby
 		player.connected = true
 		player.ctx = ctx
 
@@ -27,6 +29,7 @@ func NewPlayer(ctx context.Context, sess ssh.Session, langPref *language.Languag
 		UpdateChan:         make(chan struct{}),
 		LanguagePreference: langPref,
 		Sess:               sess,
+		ActiveScreenCode:   screen.BoardLobby,
 		connected:          true,
 		ctx:                ctx,
 	}
@@ -63,4 +66,14 @@ func GetConnectedPlayerCount() int {
 		}
 	}
 	return count
+}
+
+func (s *Game) updateScreens() {
+	for _, player := range players {
+		if player == s.GetCurrentPlayer() {
+			player.updateScreen(screen.BoardReveal)
+		} else {
+			player.updateScreen(screen.BoardBuildAnswer)
+		}
+	}
 }

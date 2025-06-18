@@ -25,6 +25,7 @@ func (s *Game) Begin() error {
 		s.deal()
 		s.CurrentTurnIndex = 0
 		s.inProgress = true
+		s.updateScreens()
 		return nil
 	})
 }
