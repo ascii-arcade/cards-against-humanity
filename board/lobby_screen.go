@@ -22,11 +22,6 @@ func (m *Model) newLobbyScreen() *lobbyScreen {
 	}
 }
 
-func (s *lobbyScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
-}
-
 func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -38,6 +33,10 @@ func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 		case keys.LobbyStartGame.TriggeredBy(msg.String()):
 			if s.model.Player.IsHost() {
 				_ = s.model.Game.Begin()
+			}
+		case keys.LobbySettings.TriggeredBy(msg.String()):
+			if s.model.Player.IsHost() {
+				s.model.Player.ActiveScreenCode = screen.BoardSettings
 			}
 		}
 	}
@@ -56,6 +55,8 @@ func (s *lobbyScreen) View() string {
 			errorMessage := s.model.lang().Get("error", err.Error())
 			footer = s.style.Foreground(colors.Error).Render(errorMessage)
 		}
+
+		footer += "\n\n" + fmt.Sprintf(s.model.lang().Get("board", "press_to_settings"), keys.LobbySettings.String(s.style))
 	}
 	footer += "\n"
 	footer += fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))

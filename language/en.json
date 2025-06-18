@@ -27,6 +27,7 @@
     "board": {
       "waiting_for_start": "Waiting for the host to start the game...",
       "press_to_start": "Press %s to start the game",
+      "press_to_settings": "Press %s for settings",
       "player_list_you": "you",
       "player_list_host": "host",
       "disconnected_player": "%s has disconnected. Waiting for them to reconnect...",

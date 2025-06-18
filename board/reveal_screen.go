@@ -4,7 +4,6 @@ import (
 	"strconv"
 
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -19,11 +18,6 @@ func (m *Model) newRevealScreen() *revealScreen {
 		model: m,
 		style: m.style,
 	}
-}
-
-func (s *revealScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
 }
 
 func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {

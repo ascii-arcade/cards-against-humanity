@@ -2,6 +2,8 @@ package games
 
 import (
 	"errors"
+
+	"github.com/ascii-arcade/cards-against-humanity/screen"
 )
 
 func (s *Game) Count(player *Player) {
@@ -40,6 +42,7 @@ func (s *Game) LockAnswer(player *Player) error {
 		}
 		if len(player.Answer.AnswerCards) == s.QuestionCard.Pick {
 			player.Answer.IsLocked = true
+			player.updateScreen(screen.BoardReveal)
 			return nil
 		}
 		return errors.New("not_enough_picks")

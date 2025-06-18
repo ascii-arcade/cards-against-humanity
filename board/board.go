@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/ascii-arcade/cards-against-humanity/colors"
@@ -20,6 +21,8 @@ type Model struct {
 	height    int
 	style     lipgloss.Style
 	errorCode string
+
+	currentScreen screen.Screen
 
 	Player *games.Player
 	Game   *games.Game
@@ -88,19 +91,39 @@ func (m Model) View() string {
 	return m.activeScreen().View()
 }
 
-func (m *Model) activeScreen() screen.Screen {
-	if !m.Game.InProgress() {
-		return m.newLobbyScreen()
-	}
+func (m *Model) currentScreenCodeChanged() bool {
+	changed := m.Player.LastScreenCode != m.Player.ActiveScreenCode
+	m.Player.LastScreenCode = m.Player.ActiveScreenCode
 
-	switch {
-	case m.Game.Winner != nil:
-		return m.newWinnerScreen()
-	case m.Game.GetCurrentPlayer() == m.Player || m.Player.Answer.IsLocked:
-		return m.newRevealScreen()
-	default:
-		return m.newBuildAnswerScreen()
+	return changed
+}
+
+func (m *Model) activeScreen() screen.Screen {
+	log.Println("A Active screen code:", m.Player.ActiveScreenCode)
+	log.Println("A Last screen code:", m.Player.LastScreenCode)
+
+	if m.currentScreen == nil || m.currentScreenCodeChanged() {
+		switch m.Player.ActiveScreenCode {
+		case screen.BoardLobby:
+			log.Println("Creating new lobby screen")
+			m.currentScreen = m.newLobbyScreen()
+		case screen.BoardSettings:
+			log.Println("Creating new settings screen")
+			newScreen := m.newSettingsScreen()
+			newScreen.Init()
+			m.currentScreen = newScreen
+		case screen.BoardReveal:
+			m.currentScreen = m.newRevealScreen()
+		case screen.BoardBuildAnswer:
+			m.currentScreen = m.newBuildAnswerScreen()
+		case screen.BoardWinner:
+			m.currentScreen = m.newWinnerScreen()
+		}
 	}
+	log.Println("B Active screen code:", m.Player.ActiveScreenCode)
+	log.Println("B Last screen code:", m.Player.LastScreenCode)
+
+	return m.currentScreen
 }
 
 func waitForRefreshSignal(ch chan struct{}) tea.Cmd {

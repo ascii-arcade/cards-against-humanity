@@ -2,6 +2,7 @@ package menu
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/ascii-arcade/cards-against-humanity/colors"
@@ -9,7 +10,6 @@ import (
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
 	"github.com/ascii-arcade/cards-against-humanity/language"
-	"github.com/ascii-arcade/cards-against-humanity/messages"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -36,8 +36,11 @@ type doneMsg struct{}
 type Model struct {
 	width  int
 	height int
-	screen screen.Screen
 	style  lipgloss.Style
+
+	activeScreenCode int
+	lastScreenCode   int
+	currentScreen    screen.Screen
 
 	errorCode     string
 	gameCodeInput textinput.Model
@@ -51,15 +54,15 @@ func NewModel(width, height int, style lipgloss.Style, player *games.Player) Mod
 	ti.CharLimit = 7
 
 	m := Model{
-		width:  width,
-		height: height,
-		style:  style,
+		width:            width,
+		height:           height,
+		activeScreenCode: screen.MenuSplash,
+		style:            style,
 
 		gameCodeInput: ti,
 		player:        player,
 	}
 
-	m.screen = m.newSplashScreen()
 	return m
 }
 
@@ -79,10 +82,6 @@ func (m *Model) lang() *language.Language {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case messages.SwitchScreenMsg:
-		m.screen = msg.Screen.WithModel(&m)
-		return m, nil
-
 	case tea.KeyMsg:
 		switch {
 		case keys.ExitApplication.TriggeredBy(msg.String()):
@@ -90,7 +89,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 
-	screenModel, cmd := m.screen.Update(msg)
+	screenModel, cmd := m.activeScreen().Update(msg)
 	return screenModel.(*Model), cmd
 }
 
@@ -108,10 +107,33 @@ func (m Model) View() string {
 	panes := lipgloss.JoinVertical(
 		lipgloss.Center,
 		paneStyle.Align(lipgloss.Center, lipgloss.Bottom).Foreground(colors.Logo).Height(m.height/2).Render(logo),
-		paneStyle.Align(lipgloss.Center, lipgloss.Top).Render(m.screen.View()),
+		paneStyle.Align(lipgloss.Center, lipgloss.Top).Render(m.activeScreen().View()),
 	)
 
 	return style.Render(panes)
+}
+
+func (m *Model) currentScreenCodeChanged() bool {
+	changed := m.lastScreenCode != m.activeScreenCode
+	m.lastScreenCode = m.activeScreenCode
+
+	return changed
+}
+
+func (m *Model) activeScreen() screen.Screen {
+	if m.currentScreen == nil || m.currentScreenCodeChanged() {
+		switch m.activeScreenCode {
+		case screen.MenuSplash:
+			m.currentScreen = m.newSplashScreen()
+		case screen.MenuTitle:
+			m.currentScreen = m.newTitleScreen()
+		case screen.MenuJoin:
+			log.Println("Creating new join screen")
+			m.currentScreen = m.newJoinScreen()
+		}
+	}
+
+	return m.currentScreen
 }
 
 func (m *Model) setError(err string) {

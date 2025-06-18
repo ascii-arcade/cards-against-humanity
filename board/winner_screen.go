@@ -3,7 +3,6 @@ package board
 import (
 	"fmt"
 
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -18,11 +17,6 @@ func (m *Model) newWinnerScreen() *winnerScreen {
 		model: m,
 		style: m.style,
 	}
-}
-
-func (s *winnerScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
 }
 
 func (s *winnerScreen) Update(msg tea.Msg) (any, tea.Cmd) {

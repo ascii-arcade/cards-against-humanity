@@ -14,8 +14,10 @@ type Player struct {
 	Hand      Hand
 	TurnOrder int
 
-	isHost    bool
-	connected bool
+	ActiveScreenCode int
+	LastScreenCode   int
+	isHost           bool
+	connected        bool
 
 	UpdateChan         chan struct{}
 	LanguagePreference *language.LanguagePreference
@@ -51,4 +53,8 @@ func (p *Player) OnDisconnect(fn func()) {
 
 func (p *Player) incrementCount() {
 	p.Points++
+}
+
+func (p *Player) updateScreen(code int) {
+	p.ActiveScreenCode = code
 }

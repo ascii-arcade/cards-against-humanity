@@ -24,11 +24,6 @@ func (m *Model) newTitleScreen() *titleScreen {
 	}
 }
 
-func (s *titleScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
-}
-
 func (s *titleScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -46,11 +41,8 @@ func (s *titleScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 			return s.model, func() tea.Msg { return messages.SwitchToBoardMsg{Game: newGame} }
 		case keys.MenuJoinGame.TriggeredBy(msg.String()):
-			return s.model, func() tea.Msg {
-				return messages.SwitchScreenMsg{
-					Screen: s.model.newJoinScreen(),
-				}
-			}
+			s.model.activeScreenCode = screen.MenuJoin
+			return s.model, nil
 		}
 	}
 
