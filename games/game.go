@@ -17,7 +17,7 @@ type Game struct {
 	StagedAnswer *Answer
 	Winner       *Player
 
-	Config           GameConfig
+	Config           Settings
 	CurrentTurnIndex int
 	inProgress       bool
 	mu               sync.Mutex
