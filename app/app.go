@@ -30,11 +30,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.active = m.board
 		initcmd := m.board.Init()
 		return m, initcmd
-
-	case messages.SwitchToMenuMsg:
-		m.active = m.menu
-		initcmd := m.menu.Init()
-		return m, initcmd
 	}
 
 	var cmd tea.Cmd

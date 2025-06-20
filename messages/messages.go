@@ -5,7 +5,6 @@ import (
 )
 
 type (
-	SwitchToMenuMsg  struct{}
 	SwitchToBoardMsg struct{ Game *games.Game }
 	PlayerUpdate     int
 )
