@@ -39,8 +39,8 @@ func (c *questionCardComponent) renderForReveal() string {
 	if !c.card.IsRevealed {
 		content += "\n\n" + c.model.lang().Get("board", "czar_question_card_not_revealed")
 	}
-	if c.model.Game.StagedAnswer != nil {
-		content = c.String(c.model.Game.StagedAnswer.AnswerCards)
+	if c.model.game.StagedAnswer != nil {
+		content = c.String(c.model.game.StagedAnswer.AnswerCards)
 	}
 
 	return c.cardStyle().Render(content)

@@ -25,7 +25,7 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case menu.SwitchToBoardMsg:
-		m.board.Game = msg.Game
+		m.board.SetGame(msg.Game)
 		m.active = m.board
 		initcmd := m.board.Init()
 		return m, initcmd
