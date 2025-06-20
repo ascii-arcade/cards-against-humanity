@@ -46,11 +46,8 @@ func (s *titleScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 
 			return s.model, func() tea.Msg { return messages.SwitchToBoardMsg{Game: newGame} }
 		case keys.MenuJoinGame.TriggeredBy(msg.String()):
-			return s.model, func() tea.Msg {
-				return messages.SwitchScreenMsg{
-					Screen: s.model.newJoinScreen(),
-				}
-			}
+			s.model.screen = s.model.newJoinScreen()
+			return s.model, nil
 		}
 	}
 

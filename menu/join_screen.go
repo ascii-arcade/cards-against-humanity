@@ -39,11 +39,8 @@ func (s *joinScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case keys.PreviousScreen.TriggeredBy(msg.String()):
-			return s.model, func() tea.Msg {
-				return messages.SwitchScreenMsg{
-					Screen: s.model.newTitleScreen(),
-				}
-			}
+			s.model.screen = s.model.newTitleScreen()
+			return s.model, nil
 		case keys.Submit.TriggeredBy(msg.String()):
 			if len(s.model.gameCodeInput.Value()) == 7 {
 				code := strings.ToUpper(s.model.gameCodeInput.Value())
