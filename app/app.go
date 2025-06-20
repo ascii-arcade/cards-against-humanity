@@ -10,7 +10,6 @@ import (
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/language"
 	"github.com/ascii-arcade/cards-against-humanity/menu"
-	"github.com/ascii-arcade/cards-against-humanity/messages"
 )
 
 type Model struct {
@@ -25,7 +24,7 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case messages.SwitchToBoardMsg:
+	case menu.SwitchToBoardMsg:
 		m.board.Game = msg.Game
 		m.active = m.board
 		initcmd := m.board.Init()

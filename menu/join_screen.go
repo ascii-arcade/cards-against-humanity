@@ -7,7 +7,6 @@ import (
 	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/messages"
 	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -58,7 +57,7 @@ func (s *joinScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 					return s.model, nil
 				}
 
-				return s.model, func() tea.Msg { return messages.SwitchToBoardMsg{Game: game} }
+				return s.model, func() tea.Msg { return SwitchToBoardMsg{Game: game} }
 			}
 		}
 

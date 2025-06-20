@@ -31,6 +31,7 @@ const logo = `++----------------------------------------------------------------
 ++------------------------------------------------------------------------------++`
 
 type doneMsg struct{}
+type SwitchToBoardMsg struct{ Game *games.Game }
 
 type Model struct {
 	width  int
