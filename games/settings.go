@@ -9,9 +9,9 @@ type Settings struct {
 
 func NewSettings() Settings {
 	return Settings{
-		EndPoints:  3,
+		EndPoints:  1,
 		HandSize:   10,
-		MinPlayers: 3,
+		MinPlayers: 2,
 		MaxPlayers: 10,
 	}
 }

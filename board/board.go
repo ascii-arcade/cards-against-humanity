@@ -103,7 +103,7 @@ func (m *Model) activeScreen() screen.Screen {
 	}
 }
 
-func waitForRefreshSignal(ch chan struct{}) tea.Cmd {
+func waitForRefreshSignal(ch chan int) tea.Cmd {
 	return func() tea.Msg {
 		return messages.PlayerUpdate(<-ch)
 	}
