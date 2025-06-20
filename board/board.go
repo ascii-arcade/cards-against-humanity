@@ -47,7 +47,7 @@ func (m *Model) lang() *language.Language {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case messages.PlayerUpdate:
-		return m, waitForRefreshSignal(m.Player.UpdateChan)
+		return m.handlePlayerUpdate(msg)
 
 	case tea.KeyMsg:
 		switch {
@@ -144,4 +144,11 @@ func (m *Model) contentStyle() lipgloss.Style {
 
 func (m *Model) contentWidth() int {
 	return max(config.MinimumWidth-10, m.width-30)
+}
+
+func (m *Model) handlePlayerUpdate(msg messages.PlayerUpdate) (tea.Model, tea.Cmd) {
+	switch msg {
+	case 1:
+	}
+	return m, waitForRefreshSignal(m.Player.UpdateChan)
 }
