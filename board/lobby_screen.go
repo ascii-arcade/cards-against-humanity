@@ -37,7 +37,7 @@ func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 		switch {
 		case keys.LobbyStartGame.TriggeredBy(msg.String()):
 			if s.model.Player.IsHost() {
-				_ = s.model.Game.Begin()
+				_ = s.model.game.Begin()
 			}
 		}
 	}
@@ -52,7 +52,7 @@ func (s *lobbyScreen) View() string {
 	if s.model.Player.IsHost() {
 		footer = fmt.Sprintf(s.model.lang().Get("board", "press_to_start"), keys.LobbyStartGame.String(s.style))
 
-		if err := s.model.Game.IsPlayerCountOk(); err != nil {
+		if err := s.model.game.IsPlayerCountOk(); err != nil {
 			errorMessage := s.model.lang().Get("error", err.Error())
 			footer = s.style.Foreground(colors.Error).Render(errorMessage)
 		}
@@ -60,7 +60,7 @@ func (s *lobbyScreen) View() string {
 	footer += "\n"
 	footer += fmt.Sprintf(s.model.lang().Get("global", "quit"), keys.ExitApplication.String(s.style))
 
-	header := s.model.Game.Code
+	header := s.model.game.Code
 	playerList := s.style.Render(s.playerList())
 
 	content := lipgloss.JoinVertical(
@@ -86,7 +86,7 @@ func (s *lobbyScreen) View() string {
 
 func (s *lobbyScreen) playerList() string {
 	playerList := ""
-	for _, p := range s.model.Game.GetPlayers() {
+	for _, p := range s.model.game.GetPlayers() {
 		playerList += "* " + p.Name
 		if p.Name == s.model.Player.Name {
 			playerList += fmt.Sprintf(" (%s)", s.model.lang().Get("board", "player_list_you"))

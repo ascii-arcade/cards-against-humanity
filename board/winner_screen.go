@@ -30,7 +30,7 @@ func (s *winnerScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 }
 
 func (s *winnerScreen) View() string {
-	winner := s.model.Game.GetWinner()
+	winner := s.model.game.GetWinner()
 
 	content := lipgloss.JoinVertical(
 		lipgloss.Center,

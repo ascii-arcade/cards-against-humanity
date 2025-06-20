@@ -33,7 +33,7 @@ func (c *answersComponent) render(isAllRevealed bool, willBeRevealed bool, index
 
 	var content strings.Builder
 
-	if c.model.Game.GetCurrentPlayer() == c.model.Player && willBeRevealed {
+	if c.model.game.GetCurrentPlayer() == c.model.Player && willBeRevealed {
 		content.WriteString("[r]eveal")
 	}
 	if isAllRevealed {

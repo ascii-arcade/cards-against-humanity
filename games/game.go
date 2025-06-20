@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/ascii-arcade/cards-against-humanity/deck"
+	"github.com/ascii-arcade/cards-against-humanity/messages"
 	"github.com/charmbracelet/ssh"
 )
 
@@ -34,10 +35,7 @@ func (s *Game) GetPlayers() []*Player {
 
 func (s *Game) refresh() {
 	for _, p := range s.players {
-		select {
-		case p.UpdateChan <- struct{}{}:
-		default:
-		}
+		p.update(messages.Refresh)
 	}
 }
 

@@ -17,7 +17,7 @@ type Player struct {
 	isHost    bool
 	connected bool
 
-	UpdateChan         chan struct{}
+	UpdateChan         chan int
 	LanguagePreference *language.LanguagePreference
 
 	Sess ssh.Session
@@ -51,4 +51,11 @@ func (p *Player) OnDisconnect(fn func()) {
 
 func (p *Player) incrementCount() {
 	p.Points++
+}
+
+func (p *Player) update(code int) {
+	select {
+	case p.UpdateChan <- code:
+	default:
+	}
 }

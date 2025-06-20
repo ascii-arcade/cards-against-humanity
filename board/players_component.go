@@ -17,7 +17,7 @@ type playersComponent struct {
 func newPlayersComponent(model *Model) *playersComponent {
 	return &playersComponent{
 		model:   model,
-		players: model.Game.GetPlayers(),
+		players: model.game.GetPlayers(),
 		style:   model.style,
 	}
 }
@@ -30,7 +30,7 @@ func (c *playersComponent) render() string {
 		playerStyle := style
 		var content strings.Builder
 
-		if c.model.Game.GetCurrentPlayer() == player {
+		if c.model.game.GetCurrentPlayer() == player {
 			playerStyle = playerStyle.Bold(true)
 		} else if !player.Answer.IsLocked {
 			content.WriteString("")
