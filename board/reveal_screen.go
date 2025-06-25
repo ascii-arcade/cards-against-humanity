@@ -1,6 +1,7 @@
 package board
 
 import (
+	"math/rand/v2"
 	"strconv"
 
 	"github.com/ascii-arcade/cards-against-humanity/keys"
@@ -86,6 +87,9 @@ func (s *revealScreen) answers() string {
 			answers = append(answers, newAnswersComponent(s.model, &player.Answer))
 		}
 	}
+	rand.Shuffle(len(answers), func(i, j int) {
+		answers[i], answers[j] = answers[j], answers[i]
+	})
 
 	canReveal := s.isAllLocked()
 	var answerComponents []string
