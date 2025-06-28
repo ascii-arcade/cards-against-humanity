@@ -2,6 +2,8 @@ package games
 
 import (
 	"errors"
+
+	"github.com/ascii-arcade/cards-against-humanity/messages"
 )
 
 func (s *Game) Count(player *Player) {
@@ -40,6 +42,7 @@ func (s *Game) LockAnswer(player *Player) error {
 		}
 		if len(player.Answer.AnswerCards) == s.QuestionCard.Pick {
 			player.Answer.IsLocked = true
+			player.update(messages.RevealScreen)
 			return nil
 		}
 		return errors.New("not_enough_picks")
@@ -80,6 +83,15 @@ func (s *Game) LockStagedAnswer() {
 	s.withLock(func() {
 		if s.StagedAnswer != nil {
 			s.StagedAnswer.Player.incrementCount()
+
+			if len(s.players) > s.CurrentTurnIndex+1 {
+				s.CurrentTurnIndex++
+			} else {
+				s.CurrentTurnIndex = 0
+			}
+
+			s.deal()
+			s.setPlayerScreens()
 		}
 	})
 }

@@ -36,26 +36,25 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 		return s.model, nil
 	case tea.KeyMsg:
 		switch {
-		case s.model.Game.GetCurrentPlayer() != s.model.Player:
+		case s.model.game.GetCurrentPlayer() != s.model.Player:
 			s.model.setError("not_your_turn")
 			return s.model, nil
 		case keys.GamePick.TriggeredBy(msg.String()):
 			if s.isAllRevealed() {
 				index, _ := strconv.Atoi(msg.String())
-				s.model.Game.StageAnswer(index)
+				s.model.game.StageAnswer(index)
 			}
 		case keys.GameLock.TriggeredBy(msg.String()):
-			if s.model.Game.StagedAnswer != nil {
-				s.model.Game.LockStagedAnswer()
-				s.model.Game.NextTurn()
+			if s.model.game.StagedAnswer != nil {
+				s.model.game.LockStagedAnswer()
 			}
 		case keys.GameReveal.TriggeredBy(msg.String()):
-			if !s.model.Game.QuestionCard.IsRevealed {
-				s.model.Game.RevealQuestionCard()
+			if !s.model.game.QuestionCard.IsRevealed {
+				s.model.game.RevealQuestionCard()
 				return s.model, nil
 			}
 			if s.isAllLocked() {
-				s.model.Game.RevealNextAnswer()
+				s.model.game.RevealNextAnswer()
 			}
 		}
 	}
@@ -66,7 +65,7 @@ func (s *revealScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 func (s *revealScreen) View() string {
 	question := newQuestionCardComponent(
 		s.model,
-		&s.model.Game.QuestionCard,
+		&s.model.game.QuestionCard,
 	).renderForReveal()
 
 	return s.model.layoutStyle().Render(
@@ -82,7 +81,7 @@ func (s *revealScreen) View() string {
 
 func (s *revealScreen) answers() string {
 	var answers []*answersComponent
-	for _, player := range s.model.Game.GetPlayers() {
+	for _, player := range s.model.game.GetPlayers() {
 		if player.Answer.IsLocked {
 			answers = append(answers, newAnswersComponent(s.model, &player.Answer))
 		}
@@ -113,8 +112,8 @@ func (s *revealScreen) answers() string {
 }
 
 func (s *revealScreen) isAllRevealed() bool {
-	for _, player := range s.model.Game.GetPlayers() {
-		if s.model.Game.GetCurrentPlayer() == player {
+	for _, player := range s.model.game.GetPlayers() {
+		if s.model.game.GetCurrentPlayer() == player {
 			continue
 		}
 		if !player.Answer.IsRevealed {
@@ -125,8 +124,8 @@ func (s *revealScreen) isAllRevealed() bool {
 }
 
 func (s *revealScreen) isAllLocked() bool {
-	for _, player := range s.model.Game.GetPlayers() {
-		if s.model.Game.GetCurrentPlayer() == player {
+	for _, player := range s.model.game.GetPlayers() {
+		if s.model.game.GetCurrentPlayer() == player {
 			continue
 		}
 		if !player.Answer.IsLocked {
