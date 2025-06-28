@@ -2,7 +2,6 @@ package board
 
 import (
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -17,11 +16,6 @@ func (m *Model) newSettingsScreen() *settingsScreen {
 		model: m,
 		style: m.style,
 	}
-}
-
-func (s *settingsScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
 }
 
 func (s *settingsScreen) Update(msg tea.Msg) (any, tea.Cmd) {

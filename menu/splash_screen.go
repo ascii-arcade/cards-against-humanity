@@ -1,7 +1,6 @@
 package menu
 
 import (
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -31,11 +30,6 @@ func (m *Model) newSplashScreen() *splashScreen {
 		model: m,
 		style: m.style,
 	}
-}
-
-func (s *splashScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
 }
 
 func (s *splashScreen) Update(msg tea.Msg) (any, tea.Cmd) {
