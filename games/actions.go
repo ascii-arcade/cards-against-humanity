@@ -12,6 +12,19 @@ func (s *Game) Count(player *Player) {
 	})
 }
 
+func (s *Game) OpenSettings() {
+	s.withLock(func() {
+		for _, p := range s.players {
+			if p.IsHost() {
+				p.update(messages.SettingsScreen)
+				break
+			} else {
+				continue
+			}
+		}
+	})
+}
+
 func (s *Game) RevealQuestionCard() {
 	s.withLock(func() {
 		s.QuestionCard.IsRevealed = true

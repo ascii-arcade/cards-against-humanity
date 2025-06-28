@@ -39,6 +39,10 @@ func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			if s.model.Player.IsHost() {
 				_ = s.model.game.Begin()
 			}
+		case keys.LobbySettings.TriggeredBy(msg.String()):
+			if s.model.Player.IsHost() {
+				s.model.game.OpenSettings()
+			}
 		}
 	}
 
