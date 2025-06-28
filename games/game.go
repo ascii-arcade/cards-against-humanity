@@ -18,7 +18,7 @@ type Game struct {
 	StagedAnswer *Answer
 	Winner       *Player
 
-	Config           Settings
+	Settings         Settings
 	CurrentTurnIndex int
 	inProgress       bool
 	mu               sync.Mutex
@@ -140,7 +140,7 @@ func (s *Game) GetCurrentPlayer() *Player {
 
 func (s *Game) GetWinner() *Player {
 	for _, player := range s.players {
-		if player.Points >= s.Config.EndPoints {
+		if player.Points >= s.Settings.EndPoints {
 			return player
 		}
 	}
