@@ -8,6 +8,5 @@ const (
 	Refresh = iota
 	BuildAnswerScreen
 	RevealScreen
-	SettingsScreen
 	WinnerScreen
 )

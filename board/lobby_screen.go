@@ -35,7 +35,9 @@ func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 			}
 		case keys.LobbySettings.TriggeredBy(msg.String()):
 			if s.model.Player.IsHost() {
-				s.model.game.OpenSettings()
+				settingsScreen := s.model.newSettingsScreen()
+				settingsScreen.Init()
+				s.model.screen = settingsScreen
 			}
 		}
 	}

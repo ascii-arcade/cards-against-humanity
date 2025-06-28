@@ -143,8 +143,6 @@ func (m *Model) handlePlayerUpdate(msg int) (tea.Model, tea.Cmd) {
 		m.screen = m.newBuildAnswerScreen()
 	case messages.RevealScreen:
 		m.screen = m.newRevealScreen()
-	case messages.SettingsScreen:
-		m.screen = m.newSettingsScreen()
 	case messages.WinnerScreen:
 		m.screen = m.newWinnerScreen()
 	}
