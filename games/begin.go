@@ -31,10 +31,10 @@ func (s *Game) Begin() error {
 }
 
 func (s *Game) IsPlayerCountOk() error {
-	if len(s.players) > s.Config.MaxPlayers {
+	if len(s.players) > s.Settings.MaxPlayers {
 		return errors.New("too_many_players")
 	}
-	if len(s.players) < s.Config.MinPlayers {
+	if len(s.players) < s.Settings.MinPlayers {
 		return errors.New("not_enough_players")
 	}
 	return nil
@@ -53,7 +53,7 @@ func (s *Game) deal() {
 
 	for _, player := range s.players {
 		player.Answer = Answer{Player: player}
-		for len(player.Hand) < s.Config.HandSize && len(s.AnswerDeck) > 0 {
+		for len(player.Hand) < s.Settings.HandSize && len(s.AnswerDeck) > 0 {
 			player.Hand.add(s.AnswerDeck[0])
 			s.AnswerDeck = s.AnswerDeck[1:]
 		}

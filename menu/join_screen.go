@@ -7,7 +7,6 @@ import (
 	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/games"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -24,11 +23,6 @@ func (m *Model) newJoinScreen() *joinScreen {
 		model: m,
 		style: m.style,
 	}
-}
-
-func (s *joinScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
 }
 
 func (s *joinScreen) Update(msg tea.Msg) (any, tea.Cmd) {

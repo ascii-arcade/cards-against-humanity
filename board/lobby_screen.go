@@ -5,7 +5,6 @@ import (
 
 	"github.com/ascii-arcade/cards-against-humanity/colors"
 	"github.com/ascii-arcade/cards-against-humanity/keys"
-	"github.com/ascii-arcade/cards-against-humanity/screen"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -22,11 +21,6 @@ func (m *Model) newLobbyScreen() *lobbyScreen {
 	}
 }
 
-func (s *lobbyScreen) WithModel(model any) screen.Screen {
-	s.model = model.(*Model)
-	return s
-}
-
 func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -38,6 +32,12 @@ func (s *lobbyScreen) Update(msg tea.Msg) (any, tea.Cmd) {
 		case keys.LobbyStartGame.TriggeredBy(msg.String()):
 			if s.model.Player.IsHost() {
 				_ = s.model.game.Begin()
+			}
+		case keys.LobbySettings.TriggeredBy(msg.String()):
+			if s.model.Player.IsHost() {
+				settingsScreen := s.model.newSettingsScreen()
+				settingsScreen.Init()
+				s.model.screen = settingsScreen
 			}
 		}
 	}
