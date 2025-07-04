@@ -12,11 +12,12 @@ import (
 type Game struct {
 	Code string
 
-	AnswerDeck   []deck.AnswerCard
-	QuestionDeck []deck.QuestionCard
-	QuestionCard deck.QuestionCard
-	StagedAnswer *Answer
-	Winner       *Player
+	AnswerDeck    []deck.AnswerCard
+	LockedAnswers []*Answer
+	QuestionDeck  []deck.QuestionCard
+	QuestionCard  deck.QuestionCard
+	StagedAnswer  *Answer
+	Winner        *Player
 
 	Settings         Settings
 	CurrentTurnIndex int

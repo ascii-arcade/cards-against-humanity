@@ -23,6 +23,7 @@ func (s *Game) Begin() error {
 		s.AnswerDeck, s.QuestionDeck = deck.NewDecks()
 		s.resetPlayerHands()
 		s.deal()
+		s.LockedAnswers = make([]*Answer, 0)
 		s.CurrentTurnIndex = 0
 		s.inProgress = true
 		s.setPlayerScreens()
