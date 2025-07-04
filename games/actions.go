@@ -43,6 +43,8 @@ func (s *Game) LockAnswer(player *Player) error {
 		if len(player.Answer.AnswerCards) == s.QuestionCard.Pick {
 			player.Answer.IsLocked = true
 			player.update(messages.RevealScreen)
+			s.LockedAnswers = append(s.LockedAnswers, &player.Answer)
+			s.shuffleAnswers()
 			return nil
 		}
 		return errors.New("not_enough_picks")
@@ -51,14 +53,11 @@ func (s *Game) LockAnswer(player *Player) error {
 
 func (s *Game) RevealNextAnswer() {
 	s.withLock(func() {
-		for _, player := range s.GetPlayers() {
-			if s.GetCurrentPlayer() == player {
+		for _, answer := range s.LockedAnswers {
+			if answer.IsRevealed {
 				continue
 			}
-			if player.Answer.IsRevealed {
-				continue
-			}
-			player.Answer.IsRevealed = true
+			answer.IsRevealed = true
 			break
 		}
 	})
@@ -92,6 +91,7 @@ func (s *Game) LockStagedAnswer() {
 
 			s.deal()
 			s.setPlayerScreens()
+			s.LockedAnswers = make([]*Answer, 0)
 		}
 	})
 }

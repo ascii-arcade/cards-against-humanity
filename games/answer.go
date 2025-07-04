@@ -1,6 +1,7 @@
 package games
 
 import (
+	"math/rand/v2"
 	"slices"
 	"strings"
 
@@ -40,4 +41,10 @@ func (a *Answer) String() string {
 	}
 
 	return strings.Join(answerStrings, ",\n")
+}
+
+func (s *Game) shuffleAnswers() {
+	rand.Shuffle(len(s.LockedAnswers), func(i, j int) {
+		s.LockedAnswers[i], s.LockedAnswers[j] = s.LockedAnswers[j], s.LockedAnswers[i]
+	})
 }
